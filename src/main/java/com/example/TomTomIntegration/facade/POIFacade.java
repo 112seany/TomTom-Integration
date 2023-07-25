@@ -1,5 +1,5 @@
 package com.example.TomTomIntegration.facade;
 
 public interface POIFacade {
-    String sayHello();
+    String getPOI();
 }
