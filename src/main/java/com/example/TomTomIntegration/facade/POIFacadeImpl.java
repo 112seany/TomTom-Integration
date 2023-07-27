@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class POIFacadeImpl implements POIFacade {
+
     @Autowired
     private POIService poiService;
+
     @Override
     public String getPOI() {
         return poiService.getPOI();

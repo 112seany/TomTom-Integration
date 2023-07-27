@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class POIServiceImpl implements POIService {
+
     @Autowired
     private TomTomGateway tomGateway;
+
     @Override
     public String getPOI() {
         return tomGateway.getPOI();

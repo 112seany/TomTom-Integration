@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class POIController {
+
     @Autowired
     private POIFacade poiFacade;
 
-    @GetMapping("/poi")
+    @GetMapping("/poi/{place}")
     public String getPOI() {
         return poiFacade.getPOI();
     }
