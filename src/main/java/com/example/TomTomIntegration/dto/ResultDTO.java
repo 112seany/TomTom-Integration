@@ -1,7 +1,9 @@
 package com.example.TomTomIntegration.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class ResultDTO {
 
     @JsonProperty(value = "score")
@@ -18,6 +20,7 @@ public class ResultDTO {
 
 
     private static class POI {
+
         @JsonProperty(value = "name")
         private String name;
 
@@ -47,12 +50,12 @@ public class ResultDTO {
     }
 
     private static class Position {
+
         @JsonProperty(value = "lat")
         private String latitude;
 
         @JsonProperty(value = "lon")
         private String longitude;
     }
-
 }
 

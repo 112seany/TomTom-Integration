@@ -1,6 +1,8 @@
 package com.example.TomTomIntegration.service;
 
+import com.example.TomTomIntegration.dto.PoiDTO;
+
 public interface POIService {
 
-    String getPOI();
+    PoiDTO getPOI(String place);
 }

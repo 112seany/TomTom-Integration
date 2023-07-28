@@ -1,6 +1,9 @@
 package com.example.TomTomIntegration.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+@Data
 
 public class SummaryDTO {
 
@@ -24,4 +27,5 @@ public class SummaryDTO {
 
     @JsonProperty(value = "fuzzyLevel")
     private String fuzzyLevel;
+
 }
