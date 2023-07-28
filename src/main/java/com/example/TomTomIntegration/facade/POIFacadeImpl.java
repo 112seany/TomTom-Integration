@@ -1,5 +1,6 @@
 package com.example.TomTomIntegration.facade;
 
+import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.service.POIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ public class POIFacadeImpl implements POIFacade {
     private POIService poiService;
 
     @Override
-    public String getPOI() {
-        return poiService.getPOI();
+    public PoiDTO getPOI(String place) {
+        return poiService.getPOI(place);
     }
 }

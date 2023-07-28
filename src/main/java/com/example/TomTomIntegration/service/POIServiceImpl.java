@@ -1,5 +1,6 @@
 package com.example.TomTomIntegration.service;
 
+import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ public class POIServiceImpl implements POIService {
     private TomTomGateway tomGateway;
 
     @Override
-    public String getPOI() {
-        return tomGateway.getPOI();
+    public PoiDTO getPOI(String place) {
+        return tomGateway.getPOI(place);
     }
 }

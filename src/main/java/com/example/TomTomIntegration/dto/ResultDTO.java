@@ -1,7 +1,9 @@
 package com.example.TomTomIntegration.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class ResultDTO {
 
     @JsonProperty(value = "score")
@@ -18,6 +20,14 @@ public class ResultDTO {
 
 
     private static class POI {
+        @Override
+        public String toString() {
+            return "POI{" +
+                    "name='" + name + '\'' +
+                    ", phone='" + phone + '\'' +
+                    '}';
+        }
+
         @JsonProperty(value = "name")
         private String name;
 
@@ -44,9 +54,29 @@ public class ResultDTO {
 
         @JsonProperty(value = "freeformAddress")
         private String freeformAddress;
+
+        @Override
+        public String toString() {
+            return "Address{" +
+                    "streetNumber='" + streetNumber + '\'' +
+                    ", streetName='" + streetName + '\'' +
+                    ", postalCode='" + postalCode + '\'' +
+                    ", country='" + country + '\'' +
+                    ", countryCode='" + countryCode + '\'' +
+                    ", freeformAddress='" + freeformAddress + '\'' +
+                    '}';
+        }
     }
 
     private static class Position {
+        @Override
+        public String toString() {
+            return "Position{" +
+                    "latitude='" + latitude + '\'' +
+                    ", longitude='" + longitude + '\'' +
+                    '}';
+        }
+
         @JsonProperty(value = "lat")
         private String latitude;
 
@@ -54,5 +84,14 @@ public class ResultDTO {
         private String longitude;
     }
 
+    @Override
+    public String toString() {
+        return "ResultDTO{" +
+                "score='" + score + '\'' +
+                ", poi=" + poi +
+                ", address=" + address +
+                ", position=" + position +
+                '}';
+    }
 }
 

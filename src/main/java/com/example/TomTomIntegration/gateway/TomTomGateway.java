@@ -1,6 +1,8 @@
 package com.example.TomTomIntegration.gateway;
 
+import com.example.TomTomIntegration.dto.PoiDTO;
+
 public interface TomTomGateway {
 
-    String getPOI();
+    PoiDTO getPOI(String place);
 }
