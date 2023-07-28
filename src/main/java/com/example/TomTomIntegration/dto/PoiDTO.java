@@ -13,12 +13,4 @@ public class PoiDTO {
 
     @JsonProperty(value = "results")
     private List<ResultDTO> resultDTO;
-
-    @Override
-    public String toString() {
-        return "PoiDTO{" +
-                "summaryDTO=" + summaryDTO +
-                ", resultDTO=" + resultDTO +
-                '}';
-    }
 }
