@@ -1,8 +1,8 @@
 package com.example.TomTomIntegration.facade;
 
-import com.example.TomTomIntegration.dto.PoiDTO;
+import com.example.TomTomIntegration.response.PoiResponse;
 
 public interface POIFacade {
 
-    PoiDTO getPOI(String place);
+    PoiResponse getPOI(String place);
 }

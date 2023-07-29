@@ -2,17 +2,23 @@ package com.example.TomTomIntegration.service;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.TomTomIntegration.mapper.POIMapper;
+import com.example.TomTomIntegration.response.PoiResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class POIServiceImpl implements POIService {
 
-    @Autowired
-    private TomTomGateway tomGateway;
+    private final TomTomGateway tomGateway;
+
+    private final POIMapper poiMapper;
 
     @Override
-    public PoiDTO getPOI(String place) {
-        return tomGateway.getPOI(place);
+    public PoiResponse getPOI(String place) {
+        PoiDTO poiDTO = tomGateway.getPOI(place);
+
+        return poiMapper.mapToResponse(poiDTO);
     }
 }
