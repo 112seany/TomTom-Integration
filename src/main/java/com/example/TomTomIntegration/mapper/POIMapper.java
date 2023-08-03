@@ -2,8 +2,8 @@ package com.example.TomTomIntegration.mapper;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.dto.ResultDTO;
-import com.example.TomTomIntegration.response.PoiInfoResponse;
-import com.example.TomTomIntegration.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiInfoResponse;
+import com.example.TomTomIntegration.rest.response.PoiResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -23,7 +23,7 @@ public interface POIMapper {
         return sourceList.stream().map(this::mapResultDTOtoPoiInfoResponse).collect(Collectors.toList());
     }
 
-    private PoiInfoResponse mapResultDTOtoPoiInfoResponse(ResultDTO resultDTO) {
+    default PoiInfoResponse mapResultDTOtoPoiInfoResponse(ResultDTO resultDTO) {
         return PoiInfoResponse.builder()
                 .score(resultDTO.getScore())
                 .name(resultDTO.getPoi().getName())
@@ -36,5 +36,4 @@ public interface POIMapper {
                 .longitude(resultDTO.getPosition().getLongitude())
                 .build();
     }
-
 }

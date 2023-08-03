@@ -1,6 +1,6 @@
 package com.example.TomTomIntegration.facade;
 
-import com.example.TomTomIntegration.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.service.POIService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

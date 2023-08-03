@@ -1,6 +1,6 @@
 package com.example.TomTomIntegration.service;
 
-import com.example.TomTomIntegration.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiResponse;
 
 public interface POIService {
 
