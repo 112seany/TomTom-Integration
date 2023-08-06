@@ -1,20 +1,35 @@
 package com.example.TomTomIntegration.mapper;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
+import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.helper.TestHelper;
+import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.example.TomTomIntegration.helper.TestHelper.getPoiCreationRequest;
+import static com.example.TomTomIntegration.helper.TestHelper.getPoiEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
-public class POIMapperTest {
+public class PoiMapperTest {
 
-    private final POIMapper tested = Mappers.getMapper(POIMapper.class);
+    private final PoiMapper tested = Mappers.getMapper(PoiMapper.class);
+
+    private static PoiEntity entity;
+
+    private static PoiCreationRequest creationRequest;
+
+    @BeforeAll
+    public static void setUp() {
+         entity = getPoiEntity();
+         creationRequest = getPoiCreationRequest();
+    }
 
     @Test
     public void mapToResponse() {
@@ -42,6 +57,19 @@ public class POIMapperTest {
     public void mapToResponse_shouldReturnNullWhenPoiDTOisNull() {
         PoiResponse actual = tested.mapToResponse(null);
 
+        assertNull(actual);
+    }
+
+    @Test
+    public void mapToPOIEntity() {
+        PoiEntity actual = tested.mapToPOIEntity(creationRequest);
+
+        assertEquals(actual, entity);
+    }
+
+    @Test
+    public void MapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
+        PoiEntity actual = tested.mapToPOIEntity(null);
         assertNull(actual);
     }
 }

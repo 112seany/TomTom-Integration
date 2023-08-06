@@ -1,7 +1,6 @@
 package com.example.TomTomIntegration.rest;
 
-import com.example.TomTomIntegration.facade.POIFacade;
-import com.example.TomTomIntegration.helper.TestHelper;
+import com.example.TomTomIntegration.facade.PoiFacade;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class POIControllerTest {
+public class PoiControllerTest {
 
     @Mock
-    private POIFacade poiFacade;
+    private PoiFacade poiFacade;
 
     @InjectMocks
-    private POIController poiController;
+    private PoiController poiController;
 
     private static PoiResponse poiResponse;
 
