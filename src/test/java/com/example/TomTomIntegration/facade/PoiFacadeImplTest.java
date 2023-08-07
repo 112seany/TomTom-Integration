@@ -1,8 +1,8 @@
 package com.example.TomTomIntegration.facade;
 
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.response.PoiCreationResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import com.example.TomTomIntegration.service.PoiService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,11 +24,11 @@ public class PoiFacadeImplTest {
     @InjectMocks
     private PoiFacadeImpl poiFacade;
 
-    private static PoiResponse poiResponse;
+    private static PoiTomTomResponse poiResponse;
 
     private static PoiCreationRequest poiCreationRequest;
 
-    private static PoiCreationResponse poiCreationResponse;
+    private static PoiResponse poiCreationResponse;
 
     @BeforeAll
     public static void setUp() {
@@ -41,7 +41,7 @@ public class PoiFacadeImplTest {
     public void getPOITest_shouldReturnPoiResponse() {
         when(poiService.getPOI(POI)).thenReturn(poiResponse);
 
-        PoiResponse actual = poiFacade.getPOI(POI);
+        PoiTomTomResponse actual = poiFacade.getPOI(POI);
 
         assertEquals(poiResponse, actual);
     }
@@ -50,7 +50,7 @@ public class PoiFacadeImplTest {
     public void createPOI_shouldReturnPOICreationResponse() {
         when(poiService.createPOI(poiCreationRequest)).thenReturn(poiCreationResponse);
 
-        PoiCreationResponse actual = poiFacade.createPOI(poiCreationRequest);
+        PoiResponse actual = poiFacade.createPOI(poiCreationRequest);
 
         assertEquals(actual, poiCreationResponse);
     }

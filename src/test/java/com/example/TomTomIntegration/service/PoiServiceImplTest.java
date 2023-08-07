@@ -7,8 +7,8 @@ import com.example.TomTomIntegration.gateway.TomTomGateway;
 import com.example.TomTomIntegration.mapper.PoiMapper;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.response.PoiCreationResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,9 +40,9 @@ public class PoiServiceImplTest {
 
     private static PoiDTO poiDTO;
 
-    private static PoiResponse poiResponse;
+    private static PoiTomTomResponse poiResponse;
 
-    private static PoiCreationResponse creationResponse;
+    private static PoiResponse creationResponse;
 
     private static PoiCreationRequest creationRequest;
 
@@ -63,7 +63,7 @@ public class PoiServiceImplTest {
         when(tomGateway.getPOI(POI)).thenReturn(poiDTO);
         when(poiMapper.mapToResponse(poiDTO)).thenReturn(poiResponse);
 
-        PoiResponse actual = tested.getPOI(POI);
+        PoiTomTomResponse actual = tested.getPOI(POI);
 
         assertEquals(poiResponse, actual);
     }
@@ -74,7 +74,7 @@ public class PoiServiceImplTest {
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
 
-        PoiCreationResponse actual = tested.createPOI(creationRequest);
+        PoiResponse actual = tested.createPOI(creationRequest);
 
         assertEquals(actual, creationResponse);
         verify(poiRepository).save(poiEntity);

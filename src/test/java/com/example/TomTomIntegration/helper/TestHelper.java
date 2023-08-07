@@ -3,9 +3,10 @@ package com.example.TomTomIntegration.helper;
 import com.example.TomTomIntegration.dto.*;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.response.PoiCreationResponse;
-import com.example.TomTomIntegration.rest.response.PoiInfoResponse;
+import com.example.TomTomIntegration.rest.request.PoiRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiInfoResponse;
+import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -57,10 +58,10 @@ public class TestHelper {
 
     public static final String POI = "restaraunt";
 
-    public static final Integer ID = 0;
+    public static final Long ID = 1L;
 
-    public static PoiResponse getPoiResponse() {
-        return PoiResponse.builder()
+    public static PoiTomTomResponse getPoiResponse() {
+        return PoiTomTomResponse.builder()
                 .poiInfoResponse(getPoiInfoResponse())
                 .numberResults(getSummaryDTO().getNumResults())
                 .offset(getSummaryDTO().getOffset())
@@ -116,8 +117,8 @@ public class TestHelper {
                .build();
     }
 
-    public static PoiCreationResponse getPoiCreationResponse() {
-        return PoiCreationResponse.builder()
+    public static PoiResponse getPoiCreationResponse() {
+        return PoiResponse.builder()
                 .id(ID.toString())
                 .phone(PHONE_NUMBER)
                 .score(SCORE)

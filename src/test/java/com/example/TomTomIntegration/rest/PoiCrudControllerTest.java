@@ -2,7 +2,7 @@ package com.example.TomTomIntegration.rest;
 
 import com.example.TomTomIntegration.facade.PoiFacade;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.response.PoiCreationResponse;
+import com.example.TomTomIntegration.rest.response.PoiResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ public class PoiCrudControllerTest {
     @InjectMocks
     private PoiCrudController poiCrudController;
 
-    private static PoiCreationResponse poiCreationResponse;
+    private static PoiResponse poiCreationResponse;
 
     private static PoiCreationRequest poiCreationRequest;
 
@@ -37,7 +37,7 @@ public class PoiCrudControllerTest {
     public void createPOI_shouldReturnPoiCreationResponse() {
         when(poiFacade.createPOI(poiCreationRequest)).thenReturn(poiCreationResponse);
 
-        PoiCreationResponse actual = poiCrudController.createPOI(poiCreationRequest);
+        PoiResponse actual = poiCrudController.createPOI(poiCreationRequest);
 
         assertEquals(actual, poiCreationResponse);
     }

@@ -1,12 +1,9 @@
 package com.example.TomTomIntegration.rest.response;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -14,15 +11,22 @@ import java.util.List;
 @AllArgsConstructor
 public class PoiResponse {
 
-    @Schema(example = "10")
-    private String numberResults;
+    private String id;
 
-    @Schema(example = "0")
-    private String offset;
+    private String name;
 
-    @Schema(example = "27")
-    private String totalResults;
+    private String score;
 
-    private List<PoiInfoResponse> poiInfoResponse;
+    private String phone;
+
+    private String streetNumber;
+
+    private String streetName;
+
+    private String country;
+
+    private String latitude;
+
+    private String longitude;
 
 }
