@@ -3,9 +3,9 @@ package com.example.TomTomIntegration.helper;
 import com.example.TomTomIntegration.dto.*;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.request.PoiRequest;
-import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PoiInfoResponse;
+import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -134,6 +134,19 @@ public class TestHelper {
     public static PoiEntity getPoiEntity() {
         return PoiEntity.builder()
                 .id(ID)
+                .phone(PHONE_NUMBER)
+                .score(SCORE)
+                .name(RESTAURANT_NAME)
+                .country(COUNTRY_USA)
+                .streetNumber(STREET_NUMBER)
+                .streetName(STREET_NAME)
+                .longitude(LONGITUDE)
+                .latitude(LATITUDE)
+                .build();
+    }
+
+    public static PoiUpdateRequest getPoiUpdateRequest() {
+        return PoiUpdateRequest.builder()
                 .phone(PHONE_NUMBER)
                 .score(SCORE)
                 .name(RESTAURANT_NAME)

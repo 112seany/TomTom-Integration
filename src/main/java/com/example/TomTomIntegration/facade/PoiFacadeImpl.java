@@ -38,6 +38,4 @@ public class PoiFacadeImpl implements PoiFacade {
     public PoiResponse updatePOI(Long poiID, PoiUpdateRequest request) {
         return poiService.updatePOI(poiID, request);
     }
-
-
 }

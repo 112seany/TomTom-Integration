@@ -1,6 +1,7 @@
 package com.example.TomTomIntegration.facade;
 
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import com.example.TomTomIntegration.service.PoiService;
@@ -13,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PoiFacadeImplTest {
@@ -30,11 +31,14 @@ public class PoiFacadeImplTest {
 
     private static PoiResponse poiCreationResponse;
 
+    private static PoiUpdateRequest updateRequest;
+
     @BeforeAll
     public static void setUp() {
         poiResponse = getPoiResponse();
         poiCreationRequest = getPoiCreationRequest();
         poiCreationResponse = getPoiCreationResponse();
+        updateRequest = getPoiUpdateRequest();
     }
 
     @Test
@@ -47,11 +51,35 @@ public class PoiFacadeImplTest {
     }
 
     @Test
-    public void createPOI_shouldReturnPOICreationResponse() {
+    public void createPOI_shouldReturnPoiCreationResponse() {
         when(poiService.createPOI(poiCreationRequest)).thenReturn(poiCreationResponse);
 
         PoiResponse actual = poiFacade.createPOI(poiCreationRequest);
 
         assertEquals(actual, poiCreationResponse);
+    }
+
+    @Test
+    public void getPOIbyID_shouldReturnPoiCreationResponse() {
+        when(poiService.getPOIbyId(ID)).thenReturn(poiCreationResponse);
+
+        PoiResponse actual = poiFacade.getPOIbyID(ID);
+
+        assertEquals(actual, poiCreationResponse);
+    }
+
+    @Test
+    public void UpdatePOI_shouldReturnUpdatedPoiResponse() {
+        when(poiService.updatePOI(ID, updateRequest)).thenReturn(poiCreationResponse);
+
+        PoiResponse actual = poiFacade.updatePOI(ID, updateRequest);
+
+        assertEquals(actual, poiCreationResponse);
+    }
+
+    @Test
+    public void deletePOI_shouldDeletePOIbyGivenId() {
+        poiFacade.deletePOI(ID);
+        verify(poiService).deletePOI(ID);
     }
 }

@@ -58,6 +58,5 @@ public class PoiServiceImpl implements PoiService {
         PoiEntity entityToSave = poiMapper.mapToPOIEntityFromPoiUpdateRequest(entity, request);
 
        return poiMapper.mapToPOICreationResponse(poiRepository.save(entityToSave));
-
     }
 }

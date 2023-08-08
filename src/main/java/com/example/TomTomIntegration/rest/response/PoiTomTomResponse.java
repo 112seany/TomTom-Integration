@@ -24,5 +24,4 @@ public class PoiTomTomResponse {
     private String totalResults;
 
     private List<PoiInfoResponse> poiInfoResponse;
-
 }

@@ -30,7 +30,7 @@ public class PoiControllerTest {
     }
 
     @Test
-    public void getPoi_shouldReturnPoiResponse() {
+    public void getPOI_shouldReturnPoiResponse() {
         when(poiFacade.getPOI(QUERY)).thenReturn(poiResponse);
 
         PoiTomTomResponse actual = poiController.getPOI(QUERY);
