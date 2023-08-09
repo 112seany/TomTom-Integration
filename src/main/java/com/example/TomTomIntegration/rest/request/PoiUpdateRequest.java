@@ -1,6 +1,7 @@
-package com.example.TomTomIntegration.rest.response;
+package com.example.TomTomIntegration.rest.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PoiResponse {
+public class PoiUpdateRequest {
 
-    @Schema(example = "1")
-    private String id;
-
-    @Schema(example = "Restaurant Classic")
+    @Schema(example = "Restaurant Bavaria")
     private String name;
 
     @Schema(example = "4.4041111279")

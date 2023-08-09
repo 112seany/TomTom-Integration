@@ -7,14 +7,17 @@ import com.example.TomTomIntegration.gateway.TomTomGateway;
 import com.example.TomTomIntegration.mapper.PoiMapper;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.response.PoiCreationResponse;
+import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,11 +43,13 @@ public class PoiServiceImplTest {
 
     private static PoiDTO poiDTO;
 
-    private static PoiResponse poiResponse;
+    private static PoiTomTomResponse poiResponse;
 
-    private static PoiCreationResponse creationResponse;
+    private static PoiResponse creationResponse;
 
     private static PoiCreationRequest creationRequest;
+
+    private static PoiUpdateRequest updateRequest;
 
     private static PoiEntity poiEntity;
 
@@ -56,6 +61,7 @@ public class PoiServiceImplTest {
         creationRequest = getPoiCreationRequest();
         creationResponse = getPoiCreationResponse();
         poiEntity = getPoiEntity();
+        updateRequest = getPoiUpdateRequest();
     }
 
     @Test
@@ -63,7 +69,7 @@ public class PoiServiceImplTest {
         when(tomGateway.getPOI(POI)).thenReturn(poiDTO);
         when(poiMapper.mapToResponse(poiDTO)).thenReturn(poiResponse);
 
-        PoiResponse actual = tested.getPOI(POI);
+        PoiTomTomResponse actual = tested.getPOI(POI);
 
         assertEquals(poiResponse, actual);
     }
@@ -74,9 +80,39 @@ public class PoiServiceImplTest {
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
 
-        PoiCreationResponse actual = tested.createPOI(creationRequest);
+        PoiResponse actual = tested.createPOI(creationRequest);
 
         assertEquals(actual, creationResponse);
         verify(poiRepository).save(poiEntity);
+    }
+
+    @Test
+    public void getPOIbyID_shouldReturnPoiResponse() {
+        when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
+        when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
+
+        PoiResponse actual = tested.getPOIbyId(ID);
+
+        assertEquals(actual, creationResponse);
+    }
+
+    @Test
+    public void updatePOI_shouldReturnUpdatedPoiResponse() {
+        when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
+        when(poiMapper.mapToPOIEntityFromPoiUpdateRequest(poiEntity, updateRequest)).thenReturn(poiEntity);
+        when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
+        when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
+
+        PoiResponse actual = tested.updatePOI(ID, updateRequest);
+
+        assertEquals(actual, creationResponse);
+        verify(poiRepository).save(poiEntity);
+    }
+
+    @Test
+    public void deletePOI_shouldDeletePOIbyGivenId() {
+        tested.deletePOI(ID);
+
+        verify(poiRepository).deleteById(ID);
     }
 }

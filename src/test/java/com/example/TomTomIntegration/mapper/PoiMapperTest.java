@@ -4,15 +4,16 @@ import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.helper.TestHelper;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
-import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
+import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.example.TomTomIntegration.helper.TestHelper.getPoiCreationRequest;
-import static com.example.TomTomIntegration.helper.TestHelper.getPoiEntity;
+import static com.example.TomTomIntegration.helper.TestHelper.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -25,17 +26,20 @@ public class PoiMapperTest {
 
     private static PoiCreationRequest creationRequest;
 
+    private static PoiUpdateRequest poiUpdateRequest;
+
     @BeforeAll
     public static void setUp() {
-         entity = getPoiEntity();
-         creationRequest = getPoiCreationRequest();
+        entity = getPoiEntity();
+        creationRequest = getPoiCreationRequest();
+        poiUpdateRequest = getPoiUpdateRequest();
     }
 
     @Test
     public void mapToResponse() {
         PoiDTO poiDTO = TestHelper.getPoiDTO();
 
-        PoiResponse actual = tested.mapToResponse(poiDTO);
+        PoiTomTomResponse actual = tested.mapToResponse(poiDTO);
 
         assertEquals(actual.getNumberResults(), poiDTO.getSummaryDTO().getNumResults());
         assertEquals(actual.getOffset(), poiDTO.getSummaryDTO().getOffset());
@@ -55,7 +59,7 @@ public class PoiMapperTest {
 
     @Test
     public void mapToResponse_shouldReturnNullWhenPoiDTOisNull() {
-        PoiResponse actual = tested.mapToResponse(null);
+        PoiTomTomResponse actual = tested.mapToResponse(null);
 
         assertNull(actual);
     }
@@ -64,12 +68,21 @@ public class PoiMapperTest {
     public void mapToPOIEntity() {
         PoiEntity actual = tested.mapToPOIEntity(creationRequest);
 
-        assertEquals(actual, entity);
+        assertThat(actual).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(entity);
     }
 
     @Test
-    public void MapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
+    public void mapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
         PoiEntity actual = tested.mapToPOIEntity(null);
         assertNull(actual);
+    }
+
+    @Test
+    public void mapToPOIEntityFromPoiUpdateRequest() {
+        PoiEntity actual = tested.mapToPOIEntityFromPoiUpdateRequest(entity, poiUpdateRequest);
+
+        assertEquals(actual, entity);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.TomTomIntegration.rest;
 
 import com.example.TomTomIntegration.facade.PoiFacade;
-import com.example.TomTomIntegration.rest.response.PoiResponse;
+import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ public class PoiControllerTest {
     @InjectMocks
     private PoiController poiController;
 
-    private static PoiResponse poiResponse;
+    private static PoiTomTomResponse poiResponse;
 
     @BeforeAll
     public static void setUp() {
@@ -30,10 +30,10 @@ public class PoiControllerTest {
     }
 
     @Test
-    public void getPoi_shouldReturnPoiResponse() {
+    public void getPOI_shouldReturnPoiResponse() {
         when(poiFacade.getPOI(QUERY)).thenReturn(poiResponse);
 
-        PoiResponse actual = poiController.getPOI(QUERY);
+        PoiTomTomResponse actual = poiController.getPOI(QUERY);
 
         assertEquals(actual, poiResponse);
     }
