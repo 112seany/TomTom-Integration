@@ -38,14 +38,12 @@ public class PoiCrudControllerTest {
 
     private static PoiEntity entity;
 
-
     @BeforeAll
     public static void setUp() {
         poiCreationRequest = getPoiCreationRequest();
         poiCreationResponse = getPoiCreationResponse();
         updateRequest = getPoiUpdateRequest();
         entity = getPoiEntity();
-
     }
 
     @Test
@@ -78,6 +76,7 @@ public class PoiCrudControllerTest {
     @Test
     public void deletePOI_shouldDeletePOIbyGivenId() {
         poiCrudController.deletePOI(ID);
+
         verify(poiFacade).deletePOI(ID);
     }
 }

@@ -80,6 +80,7 @@ public class PoiFacadeImplTest {
     @Test
     public void deletePOI_shouldDeletePOIbyGivenId() {
         poiFacade.deletePOI(ID);
+
         verify(poiService).deletePOI(ID);
     }
 }

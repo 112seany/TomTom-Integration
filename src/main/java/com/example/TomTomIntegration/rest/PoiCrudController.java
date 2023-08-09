@@ -27,22 +27,22 @@ public class PoiCrudController {
 
     @Operation(summary = "Get POI", description = "Returns POI by given ID")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully received")})
-    @GetMapping("/{poiID}")
-    public PoiResponse getPOIbyID(@PathVariable(value = "poiID") Long poiID) {
-        return poiFacade.getPOIbyID(poiID);
+    @GetMapping("/{poiId}")
+    public PoiResponse getPOIbyID(@PathVariable(value = "poiId") Long poiId) {
+        return poiFacade.getPOIbyID(poiId);
     }
 
     @Operation(summary = "Update POI", description = "Update POI by given ID")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully updated")})
-    @PutMapping("/{poiID}")
-    public PoiResponse updatePOI(@PathVariable(value = "poiID") Long poiID, @RequestBody @Valid PoiUpdateRequest request) {
-        return poiFacade.updatePOI(poiID, request);
+    @PutMapping("/{poiId}")
+    public PoiResponse updatePOI(@PathVariable(value = "poiId") Long poiId, @RequestBody @Valid PoiUpdateRequest request) {
+        return poiFacade.updatePOI(poiId, request);
     }
 
     @Operation(summary = "Delete POI", description = "Delete POI by given ID")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully deleted")})
-    @DeleteMapping("/{poiID}")
-    public void deletePOI(@PathVariable(value = "poiID") Long poiID) {
-        poiFacade.deletePOI(poiID);
+    @DeleteMapping("/{poiId}")
+    public void deletePOI(@PathVariable(value = "poiId") Long poiId) {
+        poiFacade.deletePOI(poiId);
     }
 }

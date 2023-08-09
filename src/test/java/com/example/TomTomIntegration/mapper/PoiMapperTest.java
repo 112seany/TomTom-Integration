@@ -74,7 +74,7 @@ public class PoiMapperTest {
     }
 
     @Test
-    public void MapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
+    public void mapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
         PoiEntity actual = tested.mapToPOIEntity(null);
         assertNull(actual);
     }

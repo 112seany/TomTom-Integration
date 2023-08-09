@@ -112,6 +112,7 @@ public class PoiServiceImplTest {
     @Test
     public void deletePOI_shouldDeletePOIbyGivenId() {
         tested.deletePOI(ID);
+
         verify(poiRepository).deleteById(ID);
     }
 }
