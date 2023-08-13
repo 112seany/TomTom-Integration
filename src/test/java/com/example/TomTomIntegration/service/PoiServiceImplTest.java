@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 public class PoiServiceImplTest {
 
     private static final String POI = "restaraunt";
+    private static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
 
     @Mock
     private TomTomGateway tomGateway;
@@ -91,11 +92,13 @@ public class PoiServiceImplTest {
 
     @Test
     public void createPOI_shouldThrowDuplicateException() {
+        String expectedErrorMessage = String.format("Poi with name %s already exists.", creationRequest.getName());
+
         when(poiRepository.findByName(creationRequest.getName())).thenReturn(poiEntity);
 
-        DuplicateException exception = assertThrows(DuplicateException.class,() ->
-        {tested.createPOI(creationRequest);}, String.format("Poi with name %s already exists.",creationRequest.getName()));
-        assertEquals(String.format("Poi with name %s already exists.", creationRequest.getName()), exception.getMessage());
+        DuplicateException exception = assertThrows(DuplicateException.class, () -> tested.createPOI(creationRequest), expectedErrorMessage);
+
+        assertEquals(expectedErrorMessage, exception.getMessage());
 
     }
 
@@ -111,10 +114,9 @@ public class PoiServiceImplTest {
 
     @Test
     public void getPOIbyID_shouldThrowPoiNotFoundException() {
-        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () ->
-        {tested.getPOIbyId(ID);}, String.format("Poi by id %s was not found",ID));
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.getPOIbyId(ID), POI_NOT_FOUND_ERROR_MESSAGE);
 
-        assertEquals("Poi by id 1 was not found", exception.getMessage());
+        assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -132,10 +134,9 @@ public class PoiServiceImplTest {
 
     @Test
     public void updatePOI_shouldThrowPoiNotFoundException() {
-        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () ->
-        {tested.updatePOI(ID, updateRequest);}, String.format("Poi by id %s was not found",ID));
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.updatePOI(ID, updateRequest), POI_NOT_FOUND_ERROR_MESSAGE);
 
-        assertEquals("Poi by id 1 was not found", exception.getMessage());
+        assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -149,9 +150,8 @@ public class PoiServiceImplTest {
 
     @Test
     public void deletePOI_shouldThrowPoiNotFoundException() {
-        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () ->
-        { tested.deletePOI(ID);}, String.format("Poi by id %s was not found",ID));
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.deletePOI(ID), POI_NOT_FOUND_ERROR_MESSAGE);
 
-        assertEquals("Poi by id 1 was not found", exception.getMessage());
+        assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
 }
