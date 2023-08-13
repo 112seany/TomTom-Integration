@@ -2,6 +2,8 @@ package com.example.TomTomIntegration.service;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.exception.DuplicateException;
+import com.example.TomTomIntegration.exception.PoiNotFoundException;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
 import com.example.TomTomIntegration.mapper.PoiMapper;
 import com.example.TomTomIntegration.repository.PoiRepository;
@@ -33,6 +35,8 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public PoiResponse createPOI(PoiCreationRequest poiCreationRequest) {
+        checkIsPoiDuplicate(poiCreationRequest.getName());
+
         PoiEntity poiEntity = poiMapper.mapToPOIEntity(poiCreationRequest);
         PoiEntity savedEntity = poiRepository.save(poiEntity);
 
@@ -41,22 +45,33 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public PoiResponse getPOIbyId(Long poiId) {
-        Optional<PoiEntity> optionalEntity = poiRepository.findById(poiId);
-        PoiEntity entity = optionalEntity.get();
+        PoiEntity entity = checkIfPoiExists(poiId);
 
         return poiMapper.mapToPOICreationResponse(entity);
     }
 
     @Override
     public void deletePOI(Long poiId) {
+        checkIfPoiExists(poiId);
         poiRepository.deleteById(poiId);
     }
 
     @Override
     public PoiResponse updatePOI(Long poiId, PoiUpdateRequest request) {
-        PoiEntity entity = poiRepository.findById(poiId).get();
+        PoiEntity entity = checkIfPoiExists(poiId);
         PoiEntity entityToSave = poiMapper.mapToPOIEntityFromPoiUpdateRequest(entity, request);
 
-       return poiMapper.mapToPOICreationResponse(poiRepository.save(entityToSave));
+        return poiMapper.mapToPOICreationResponse(poiRepository.save(entityToSave));
+    }
+
+    private PoiEntity checkIfPoiExists(Long poiId) {
+        return poiRepository.findById(poiId)
+                .orElseThrow(() -> new PoiNotFoundException(String.format("Poi by id %s was not found", poiId)));
+    }
+
+    private void checkIsPoiDuplicate(String name) {
+        Optional.ofNullable(poiRepository.findByName(name)).ifPresent(entity -> {
+            throw new DuplicateException(String.format("Poi with name %s already exists.", name));
+        });
     }
 }

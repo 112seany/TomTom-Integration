@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PoiRepository extends JpaRepository<PoiEntity, Long> {
+
+    PoiEntity findByName(String name);
 }
