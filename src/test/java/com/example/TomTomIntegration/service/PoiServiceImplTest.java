@@ -3,6 +3,8 @@ package com.example.TomTomIntegration.service;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.exception.DuplicateException;
+import com.example.TomTomIntegration.exception.PoiNotFoundException;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
 import com.example.TomTomIntegration.mapper.PoiMapper;
 import com.example.TomTomIntegration.repository.PoiRepository;
@@ -21,6 +23,7 @@ import java.util.Optional;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,6 +31,7 @@ import static org.mockito.Mockito.when;
 public class PoiServiceImplTest {
 
     private static final String POI = "restaraunt";
+    private static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
 
     @Mock
     private TomTomGateway tomGateway;
@@ -87,6 +91,18 @@ public class PoiServiceImplTest {
     }
 
     @Test
+    public void createPOI_shouldThrowDuplicateException() {
+        String expectedErrorMessage = String.format("Poi with name %s already exists.", creationRequest.getName());
+
+        when(poiRepository.findByName(creationRequest.getName())).thenReturn(poiEntity);
+
+        DuplicateException exception = assertThrows(DuplicateException.class, () -> tested.createPOI(creationRequest), expectedErrorMessage);
+
+        assertEquals(expectedErrorMessage, exception.getMessage());
+
+    }
+
+    @Test
     public void getPOIbyID_shouldReturnPoiResponse() {
         when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
@@ -94,6 +110,13 @@ public class PoiServiceImplTest {
         PoiResponse actual = tested.getPOIbyId(ID);
 
         assertEquals(actual, creationResponse);
+    }
+
+    @Test
+    public void getPOIbyID_shouldThrowPoiNotFoundException() {
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.getPOIbyId(ID), POI_NOT_FOUND_ERROR_MESSAGE);
+
+        assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -110,9 +133,25 @@ public class PoiServiceImplTest {
     }
 
     @Test
+    public void updatePOI_shouldThrowPoiNotFoundException() {
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.updatePOI(ID, updateRequest), POI_NOT_FOUND_ERROR_MESSAGE);
+
+        assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
+    }
+
+    @Test
     public void deletePOI_shouldDeletePOIbyGivenId() {
+        when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
+
         tested.deletePOI(ID);
 
         verify(poiRepository).deleteById(ID);
+    }
+
+    @Test
+    public void deletePOI_shouldThrowPoiNotFoundException() {
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.deletePOI(ID), POI_NOT_FOUND_ERROR_MESSAGE);
+
+        assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
 }

@@ -17,47 +17,26 @@ import java.util.List;
 public class TestHelper {
 
     public static final String FREE_FORM_ADDRESS = "200 Southwest Market Street, Portland, OR 97201";
-
     public static final String COUNTRY_USA = "United States";
-
     public static final String COUNTRY_CODE = "USA";
-
     public static final String POSTAL_CODE = "97201";
-
     public static final String STREET_NUMBER = "200";
-
     public static final String STREET_NAME = "Southwest Market Street";
-
     public static final String SCORE = "2.0041568279";
-
     public static final String QUERY = "restaraunt";
-
     public static final String QUERY_TYPE = "NON_NEAR";
-
     public static final String QUERY_TIME = "39";
-
     public static final String FUZZY_LEVEL = "1";
-
     public static final String OFFSET = "0";
-
     public static final String NUM_RESULTS = "10";
-
     public static final String TOTAL_RESULTS = "27";
-
     public static final String RESTAURANT_NAME = "Restaraunt Murata";
-
     public static final String PHONE_NUMBER = "+1 503-227-0080";
-
     public static final String LATITUDE = "45.511598";
-
     public static final String LONGITUDE = "-122.678607";
-
     public static final String POI_URL = "https://api.tomtom.com/search/2/poiSearch/";
-
     public static final String API_KEY = "3OX3oQRPGeI1PsqyGep38E1CZ6k3n5yY";
-
     public static final String POI = "restaraunt";
-
     public static final Long ID = 1L;
 
     public static PoiTomTomResponse getPoiResponse() {
