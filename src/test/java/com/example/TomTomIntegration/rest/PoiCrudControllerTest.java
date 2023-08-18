@@ -66,7 +66,7 @@ public class PoiCrudControllerTest {
 
     @Test
     public void updatePOI_shouldReturnUpdatedPoiResponse() {
-        when(poiFacade.updatePOI(ID,updateRequest)).thenReturn(poiCreationResponse);
+        when(poiFacade.updatePOI(ID, updateRequest)).thenReturn(poiCreationResponse);
 
         PoiResponse actual = poiCrudController.updatePOI(ID, updateRequest);
 
