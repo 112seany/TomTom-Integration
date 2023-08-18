@@ -1,5 +1,6 @@
 package com.example.TomTomIntegration.gateway;
 
+import com.example.TomTomIntegration.dto.NearbySearchDTO;
 import com.example.TomTomIntegration.dto.PoiDTO;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,29 +28,45 @@ public class TomTomGatewayImplTest {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private TomTomGatewayImpl tomTomGateway;
+    private static final TomTomGateway tomTomGateway = new TomTomGatewayImpl();
 
     private static URI uri;
 
     private static PoiDTO poiDTO;
 
+    private static NearbySearchDTO nearbySearchDTO;
+
+    private static URI nearbySearchUri;
+
     @BeforeAll
     public static void setUp() {
-        uri = getUri();
+        uri = getPoiUri();
         poiDTO = PoiDTO.builder()
                 .summaryDTO(getSummaryDTO())
                 .resultDTO(getResultDTO())
                 .build();
+
+        nearbySearchUri = getNearbySearchUri();
+        nearbySearchDTO = getNearbySearchDTO();
+
+        ReflectionTestUtils.setField(tomTomGateway, "apiKey", API_KEY);
     }
 
     @Test
     public void getPoiTest_shouldReturnPoiDTO() {
-        ReflectionTestUtils.setField(tomTomGateway, "apiKey", API_KEY);
-
         when(restTemplate.getForEntity(uri, PoiDTO.class)).thenReturn(new ResponseEntity<>(poiDTO, HttpStatus.OK));
 
         PoiDTO actual = tomTomGateway.getPOI(POI);
 
         assertEquals(poiDTO, actual);
+    }
+
+    @Test
+    public void getNearbyPOI_shouldReturnNearbySearchDTO() {
+        when(restTemplate.getForEntity(nearbySearchUri, NearbySearchDTO.class)).thenReturn(new ResponseEntity<>(nearbySearchDTO, HttpStatus.OK));
+
+        NearbySearchDTO actual = tomTomGateway.getNearbyPOI(LAT, LON);
+
+        assertEquals(actual, nearbySearchDTO);
     }
 }

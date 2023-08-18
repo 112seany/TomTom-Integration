@@ -66,12 +66,12 @@ public class PoiServiceImpl implements PoiService {
 
     private PoiEntity checkIfPoiExists(Long poiId) {
         return poiRepository.findById(poiId)
-                .orElseThrow(() -> new PoiNotFoundException(String.format("Poi by id %s was not found", poiId)));
+                .orElseThrow(() -> new PoiNotFoundException(poiId));
     }
 
     private void checkIsPoiDuplicate(String name) {
         Optional.ofNullable(poiRepository.findByName(name)).ifPresent(entity -> {
-            throw new DuplicateException(String.format("Poi with name %s already exists.", name));
+            throw new DuplicateException(name);
         });
     }
 }

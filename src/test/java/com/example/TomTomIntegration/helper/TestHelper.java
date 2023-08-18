@@ -4,9 +4,7 @@ import com.example.TomTomIntegration.dto.*;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
-import com.example.TomTomIntegration.rest.response.PoiInfoResponse;
-import com.example.TomTomIntegration.rest.response.PoiResponse;
-import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
+import com.example.TomTomIntegration.rest.response.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -35,9 +33,12 @@ public class TestHelper {
     public static final String LATITUDE = "45.511598";
     public static final String LONGITUDE = "-122.678607";
     public static final String POI_URL = "https://api.tomtom.com/search/2/poiSearch/";
+    private static final String GET_NEARBY_POI_URL = "https://api.tomtom.com/search/2/nearbySearch/.json";
     public static final String API_KEY = "3OX3oQRPGeI1PsqyGep38E1CZ6k3n5yY";
     public static final String POI = "restaraunt";
     public static final Long ID = 1L;
+    public static final Double LON = -122.678607D;
+    public static final Double LAT = 45.511598D;
 
     public static PoiTomTomResponse getPoiResponse() {
         return PoiTomTomResponse.builder()
@@ -49,7 +50,7 @@ public class TestHelper {
     }
 
     public static SummaryDTO getSummaryDTO() {
-        return  SummaryDTO.builder()
+        return SummaryDTO.builder()
                 .query(QUERY)
                 .queryType(QUERY_TYPE)
                 .queryTime(QUERY_TIME)
@@ -69,10 +70,18 @@ public class TestHelper {
                 .build());
     }
 
-    public static URI getUri() {
+    public static URI getPoiUri() {
         return UriComponentsBuilder.fromHttpUrl(POI_URL)
                 .path(QUERY + ".json")
                 .queryParam("key", API_KEY)
+                .build().toUri();
+    }
+
+    public static URI getNearbySearchUri() {
+        return UriComponentsBuilder.fromHttpUrl(GET_NEARBY_POI_URL)
+                .queryParam("key", API_KEY)
+                .queryParam("lon", LONGITUDE)
+                .queryParam("lat", LATITUDE)
                 .build().toUri();
     }
 
@@ -84,16 +93,16 @@ public class TestHelper {
     }
 
     public static PoiCreationRequest getPoiCreationRequest() {
-       return PoiCreationRequest.builder()
-               .phone(PHONE_NUMBER)
-               .score(SCORE)
-               .name(RESTAURANT_NAME)
-               .country(COUNTRY_USA)
-               .streetNumber(STREET_NUMBER)
-               .streetName(STREET_NAME)
-               .longitude(LONGITUDE)
-               .latitude(LATITUDE)
-               .build();
+        return PoiCreationRequest.builder()
+                .phone(PHONE_NUMBER)
+                .score(SCORE)
+                .name(RESTAURANT_NAME)
+                .country(COUNTRY_USA)
+                .streetNumber(STREET_NUMBER)
+                .streetName(STREET_NAME)
+                .longitude(LONGITUDE)
+                .latitude(LATITUDE)
+                .build();
     }
 
     public static PoiResponse getPoiCreationResponse() {
@@ -137,8 +146,35 @@ public class TestHelper {
                 .build();
     }
 
+    public static NearbySearchDTO getNearbySearchDTO() {
+        return NearbySearchDTO.builder()
+                .resultDTO(getResultDTO())
+                .build();
+    }
+
+    public static NearbySearchResponse getNearbySearchResponse() {
+        return NearbySearchResponse.builder()
+                .results(getNearbySearchInfoResponse())
+                .build();
+    }
+
+    private static List<NearbySearchInfoResponse> getNearbySearchInfoResponse() {
+        return Arrays.asList(NearbySearchInfoResponse.builder()
+                .phone(PHONE_NUMBER)
+                .name(RESTAURANT_NAME)
+                .score(SCORE)
+                .countryCode(COUNTRY_CODE)
+                .streetName(STREET_NAME)
+                .streetNumber(STREET_NUMBER)
+                .freeformAddress(FREE_FORM_ADDRESS)
+                .postalCode(POSTAL_CODE)
+                .longitude(LONGITUDE)
+                .latitude(LATITUDE)
+                .build());
+    }
+
     private static AddressDTO getAddressDTO() {
-          return AddressDTO.builder()
+        return AddressDTO.builder()
                 .freeformAddress(FREE_FORM_ADDRESS)
                 .country(COUNTRY_USA)
                 .countryCode(COUNTRY_CODE)
@@ -149,7 +185,7 @@ public class TestHelper {
     }
 
     private static PoiInfoDTO getPoiInfoDTO() {
-       return PoiInfoDTO.builder()
+        return PoiInfoDTO.builder()
                 .name(RESTAURANT_NAME)
                 .phone(PHONE_NUMBER)
                 .build();
@@ -166,11 +202,11 @@ public class TestHelper {
         List<PoiInfoResponse> poiInfoResponseList = new ArrayList<>();
         poiInfoResponseList.add(getPoiInfoResponse(
                 ResultDTO.builder()
-                .score(SCORE)
-                .address(getAddressDTO())
-                .position(getPositionDTO())
-                .poi(getPoiInfoDTO())
-                .build()));
+                        .score(SCORE)
+                        .address(getAddressDTO())
+                        .position(getPositionDTO())
+                        .poi(getPoiInfoDTO())
+                        .build()));
 
         return poiInfoResponseList;
     }

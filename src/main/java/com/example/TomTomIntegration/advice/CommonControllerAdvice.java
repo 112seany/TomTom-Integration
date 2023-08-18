@@ -1,24 +1,26 @@
 package com.example.TomTomIntegration.advice;
 
-import com.example.TomTomIntegration.exception.DuplicateException;
-import com.example.TomTomIntegration.exception.PoiNotFoundException;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ControllerAdvice
 public class CommonControllerAdvice {
 
-    @ExceptionHandler(PoiNotFoundException.class)
-    public ResponseEntity<Response> handlePoiNotFoundException(PoiNotFoundException e) {
-        Response response = new Response(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex) {
+        List<String> errors = new ArrayList<>();
 
-    @ExceptionHandler(DuplicateException.class)
-    public ResponseEntity<Response> handleDuplicateException(DuplicateException e) {
-        Response response = new Response(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errors.add(violation.getMessage());
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse("Validation failed", errors);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 }

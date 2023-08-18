@@ -5,6 +5,7 @@ import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.helper.TestHelper;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
+import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,11 +29,14 @@ public class PoiMapperTest {
 
     private static PoiUpdateRequest poiUpdateRequest;
 
+    private static PoiResponse poiResponse;
+
     @BeforeAll
     public static void setUp() {
         entity = getPoiEntity();
         creationRequest = getPoiCreationRequest();
         poiUpdateRequest = getPoiUpdateRequest();
+        poiResponse = getPoiCreationResponse();
     }
 
     @Test
@@ -76,6 +80,7 @@ public class PoiMapperTest {
     @Test
     public void mapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
         PoiEntity actual = tested.mapToPOIEntity(null);
+
         assertNull(actual);
     }
 
@@ -84,5 +89,19 @@ public class PoiMapperTest {
         PoiEntity actual = tested.mapToPOIEntityFromPoiUpdateRequest(entity, poiUpdateRequest);
 
         assertEquals(actual, entity);
+    }
+
+    @Test
+    public void mapToPOICreationResponse() {
+        PoiResponse actual = tested.mapToPOICreationResponse(entity);
+
+        assertEquals(actual, poiResponse);
+    }
+
+    @Test
+    public void mapToPoiCreationResponse_shouldReturnNullWhenEntityIsNull() {
+        PoiResponse actual = tested.mapToPOICreationResponse(null);
+
+        assertNull(actual);
     }
 }
