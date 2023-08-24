@@ -1,8 +1,5 @@
 package com.example.TomTomIntegration.rest.swagger.example;
 
-import lombok.Data;
-
-@Data
 public class PoiNotFoundExceptionExample {
 
     public static final String POI_NOT_FOUND_EXCEPTION = "{\n" +

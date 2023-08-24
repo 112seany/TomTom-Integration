@@ -1,8 +1,5 @@
 package com.example.TomTomIntegration.rest.swagger.example;
 
-import lombok.Data;
-
-@Data
 public class DuplicateExceptionExample {
 
     public static final String GET_NEARBY_POI_DUPLICATE_EXCEPTION = "{\n" +

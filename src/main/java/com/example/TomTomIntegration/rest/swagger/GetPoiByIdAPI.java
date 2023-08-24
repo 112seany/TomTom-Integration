@@ -1,7 +1,5 @@
 package com.example.TomTomIntegration.rest.swagger;
 
-
-import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.swagger.example.PoiNotFoundExceptionExample;
 import com.example.TomTomIntegration.rest.swagger.example.PoiResponseExample;
 import io.swagger.v3.oas.annotations.Operation;
