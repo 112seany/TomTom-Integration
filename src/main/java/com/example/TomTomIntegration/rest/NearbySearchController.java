@@ -1,15 +1,8 @@
 package com.example.TomTomIntegration.rest;
 
 import com.example.TomTomIntegration.facade.NearbySearchFacade;
-import com.example.TomTomIntegration.rest.response.NearbySearchInfoResponse;
 import com.example.TomTomIntegration.rest.response.NearbySearchResponse;
-import com.example.TomTomIntegration.rest.swagger.PoiNotFoundExceptionExample;
-import com.example.TomTomIntegration.rest.swagger.ValidationFailedExample;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.example.TomTomIntegration.rest.swagger.GetNearbyPoiAPI;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
@@ -25,12 +18,7 @@ public class NearbySearchController {
 
     private final NearbySearchFacade nearbySearchFacade;
 
-    @Operation(summary = "Get a POI by given coordinates, longitude and latitude",
-            description = "Returns a list of POIs by given coordinates, longitude and latitude")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully received", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = NearbySearchInfoResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Validation failed", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationFailedExample.class))})})
+    @GetNearbyPoiAPI
     @GetMapping("/poi/nearby-search")
     public NearbySearchResponse getNearbyPOI(@RequestParam(value = "lat")
                                              @DecimalMin(value = "-90", message = "Latitude should be between -90 and 90")
