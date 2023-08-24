@@ -14,13 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class PoiTomTomResponse {
 
-    @Schema(example = "10")
     private String numberResults;
 
-    @Schema(example = "0")
     private String offset;
 
-    @Schema(example = "27")
     private String totalResults;
 
     private List<PoiInfoResponse> poiInfoResponse;

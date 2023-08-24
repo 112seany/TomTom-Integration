@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1" author="112seany">
+        <createTable tableName="poi">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="score" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="street_number" type="VARCHAR(255)"/>
+            <column name="street_name" type="VARCHAR(255)"/>
+            <column name="country" type="VARCHAR(255)"/>
+            <column name="latitude" type="VARCHAR(255)"/>
+            <column name="longitude" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="112seany">
+        <insert tableName="poi">
+            <column name="id" value="1"/>
+            <column name="name" value="Restaurant Bavaria"/>
+            <column name="score" value="2.341233"/>
+            <column name="phone" value="123-456-7890"/>
+            <column name="street_number" value="5451"/>
+            <column name="street_name" value="Main Street"/>
+            <column name="country" value="USA"/>
+            <column name="latitude" value="40.7128"/>
+            <column name="longitude" value="-74.0060"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
+
