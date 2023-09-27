@@ -49,6 +49,6 @@ public class PoiUpdateLogMapperTest {
 
         assertNotNull(poiLogsEntity.getTime());
         assertEquals(poiUpdateLogMessage.getPoiId(), poiLogsEntity.getPoiId());
-        assertEquals(poiLogsEntity.getPoi(), POI_INFO_CONVERTED_TO_JSON);
+        assertEquals(poiLogsEntity.getPoi(), POI_INFO_JSON);
     }
 }
