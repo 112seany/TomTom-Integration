@@ -2,12 +2,17 @@ package com.example.TomTomIntegration.helper;
 
 import com.example.TomTomIntegration.dto.*;
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.entity.PoiLogsEntity;
+import com.example.TomTomIntegration.messaging.message.PoiInfo;
+import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +44,7 @@ public class TestHelper {
     public static final Long ID = 1L;
     public static final Double LON = -122.678607D;
     public static final Double LAT = 45.511598D;
+    public static final String POI_INFO_CONVERTED_TO_JSON = "{\"id\":\"1\",\"name\":\"Restaraunt Murata\",\"score\":\"2.0041568279\",\"phone\":\"+1 503-227-0080\",\"streetNumber\":\"200\",\"streetName\":\"Southwest Market Street\",\"country\":\"United States\",\"latitude\":\"45.511598\",\"longitude\":\"-122.678607\"}";
 
     public static PoiTomTomResponse getPoiResponse() {
         return PoiTomTomResponse.builder()
@@ -155,6 +161,36 @@ public class TestHelper {
     public static NearbySearchResponse getNearbySearchResponse() {
         return NearbySearchResponse.builder()
                 .results(getNearbySearchInfoResponse())
+                .build();
+    }
+
+    public static PoiUpdateLogMessage getPoiUpdateLogMessage() {
+        return PoiUpdateLogMessage.builder()
+                .poiId(ID)
+                .poi(getPoiInfo())
+                .build();
+    }
+
+    public static PoiLogsEntity getPoiLogsEntity() {
+        return PoiLogsEntity.builder()
+                .id(ID)
+                .poiId(ID)
+                .poi(POI_INFO_CONVERTED_TO_JSON)
+                .time(LocalDateTime.now(Clock.systemDefaultZone()))
+                .build();
+    }
+
+    private static PoiInfo getPoiInfo() {
+        return PoiInfo.builder()
+                .id(ID.toString())
+                .name(RESTAURANT_NAME)
+                .score(SCORE)
+                .country(COUNTRY_USA)
+                .streetName(STREET_NAME)
+                .streetNumber(STREET_NUMBER)
+                .phone(PHONE_NUMBER)
+                .latitude(LATITUDE)
+                .longitude(LONGITUDE)
                 .build();
     }
 

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class TomTomGatewayImplTest {
 
-    private static final String POI = "restaraunt";
+    private static final String API_KEY_NAME = "apiKey";
 
     @Mock
     private RestTemplate restTemplate;
@@ -49,7 +49,7 @@ public class TomTomGatewayImplTest {
         nearbySearchUri = getNearbySearchUri();
         nearbySearchDTO = getNearbySearchDTO();
 
-        ReflectionTestUtils.setField(tomTomGateway, "apiKey", API_KEY);
+        ReflectionTestUtils.setField(tomTomGateway, API_KEY_NAME, API_KEY);
     }
 
     @Test

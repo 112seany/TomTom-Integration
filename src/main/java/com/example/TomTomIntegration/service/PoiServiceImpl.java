@@ -6,6 +6,9 @@ import com.example.TomTomIntegration.exception.DuplicateException;
 import com.example.TomTomIntegration.exception.PoiNotFoundException;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
 import com.example.TomTomIntegration.mapper.PoiMapper;
+import com.example.TomTomIntegration.mapper.PoiUpdateLogMapper;
+import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.publisher.RabbitMQPublisher;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
@@ -25,6 +28,10 @@ public class PoiServiceImpl implements PoiService {
     private final PoiMapper poiMapper;
 
     private final PoiRepository poiRepository;
+
+    private final RabbitMQPublisher rabbitMQPublisher;
+
+    private final PoiUpdateLogMapper poiUpdateLogMapper;
 
     @Override
     public PoiTomTomResponse getPOI(String place) {
@@ -53,6 +60,7 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public void deletePOI(Long poiId) {
         checkIfPoiExists(poiId);
+
         poiRepository.deleteById(poiId);
     }
 
@@ -61,7 +69,12 @@ public class PoiServiceImpl implements PoiService {
         PoiEntity entity = checkIfPoiExists(poiId);
         PoiEntity entityToSave = poiMapper.mapToPOIEntityFromPoiUpdateRequest(entity, request);
 
-        return poiMapper.mapToPOICreationResponse(poiRepository.save(entityToSave));
+        PoiResponse response = poiMapper.mapToPOICreationResponse(poiRepository.save(entityToSave));
+
+        PoiUpdateLogMessage poiUpdateLogMessage = poiUpdateLogMapper.mapToPoiUpdateLogMessage(poiId, entityToSave);
+        rabbitMQPublisher.sendPoiLogsUpdateMessage(poiUpdateLogMessage);
+
+        return response;
     }
 
     private PoiEntity checkIfPoiExists(Long poiId) {
