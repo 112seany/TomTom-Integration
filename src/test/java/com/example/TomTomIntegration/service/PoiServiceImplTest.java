@@ -1,12 +1,14 @@
 package com.example.TomTomIntegration.service;
 
-
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.exception.DuplicateException;
 import com.example.TomTomIntegration.exception.PoiNotFoundException;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
 import com.example.TomTomIntegration.mapper.PoiMapper;
+import com.example.TomTomIntegration.mapper.PoiUpdateLogMapper;
+import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.publisher.RabbitMQPublisher;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
@@ -24,13 +26,11 @@ import java.util.Optional;
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PoiServiceImplTest {
 
-    private static final String POI = "restaraunt";
     private static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
 
     @Mock
@@ -38,6 +38,12 @@ public class PoiServiceImplTest {
 
     @Mock
     private PoiMapper poiMapper;
+
+    @Mock
+    private PoiUpdateLogMapper poiUpdateLogMapper;
+
+    @Mock
+    private RabbitMQPublisher rabbitMQPublisher;
 
     @Mock
     private PoiRepository poiRepository;
@@ -57,6 +63,8 @@ public class PoiServiceImplTest {
 
     private static PoiEntity poiEntity;
 
+    private static PoiUpdateLogMessage poiUpdateLogMessage;
+
     @BeforeAll
     public static void setUp() {
         poiDTO = getPoiDTO();
@@ -66,10 +74,12 @@ public class PoiServiceImplTest {
         creationResponse = getPoiCreationResponse();
         poiEntity = getPoiEntity();
         updateRequest = getPoiUpdateRequest();
+
+        poiUpdateLogMessage = getPoiUpdateLogMessage();
     }
 
     @Test
-    public void getPoiTest_shouldReturnPoiResponse() {
+    public void getPOI_shouldReturnPoiResponse() {
         when(tomGateway.getPOI(POI)).thenReturn(poiDTO);
         when(poiMapper.mapToResponse(poiDTO)).thenReturn(poiResponse);
 
@@ -125,11 +135,14 @@ public class PoiServiceImplTest {
         when(poiMapper.mapToPOIEntityFromPoiUpdateRequest(poiEntity, updateRequest)).thenReturn(poiEntity);
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
+        when(poiUpdateLogMapper.mapToPoiUpdateLogMessage(ID, poiEntity)).thenReturn(poiUpdateLogMessage);
 
         PoiResponse actual = tested.updatePOI(ID, updateRequest);
 
         assertEquals(actual, creationResponse);
         verify(poiRepository).save(poiEntity);
+        verify(poiUpdateLogMapper).mapToPoiUpdateLogMessage(ID, poiEntity);
+        verify(rabbitMQPublisher).sendPoiLogsUpdateMessage(poiUpdateLogMessage);
     }
 
     @Test

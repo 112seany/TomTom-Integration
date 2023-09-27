@@ -1,17 +1,13 @@
-package com.example.TomTomIntegration.rest.response;
+package com.example.TomTomIntegration.messaging.message;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class PoiResponse implements Serializable {
+public class PoiInfo implements Serializable {
 
     private String id;
 

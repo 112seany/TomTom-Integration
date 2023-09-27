@@ -46,15 +46,16 @@ public interface PoiMapper {
     }
 
     default PoiEntity mapToPOIEntityFromPoiUpdateRequest(PoiEntity entity, PoiUpdateRequest request) {
-        entity.setName(request.getName());
-        entity.setPhone(request.getPhone());
-        entity.setCountry(request.getCountry());
-        entity.setScore(request.getScore());
-        entity.setStreetName(request.getStreetName());
-        entity.setStreetNumber(request.getStreetNumber());
-        entity.setLatitude(request.getLatitude());
-        entity.setLongitude(request.getLongitude());
-
-        return entity;
+        return PoiEntity.builder()
+                .id(entity.getId())
+                .name(request.getName())
+                .phone(request.getPhone())
+                .country(request.getCountry())
+                .score(request.getScore())
+                .streetName(request.getStreetName())
+                .streetNumber(request.getStreetNumber())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
+                .build();
     }
 }
