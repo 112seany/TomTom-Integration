@@ -30,10 +30,10 @@ public class NearbySearchFacadeImplTest {
     }
 
     @Test
-    public void getNearbyPOI_shouldReturn_NearbySearchResponse() {
-        when(nearbySearchService.getNearbyPOI(LAT,LON)).thenReturn(nearbySearchResponse);
+    public void getNearbyPoi_shouldReturn_NearbySearchResponse() {
+        when(nearbySearchService.getNearbyPoi(LAT,LON)).thenReturn(nearbySearchResponse);
 
-        NearbySearchResponse actual = nearbySearchFacade.getNearbyPOI(LAT,LON);
+        NearbySearchResponse actual = nearbySearchFacade.getNearbyPoi(LAT,LON);
 
         assertEquals(nearbySearchResponse, actual);
     }

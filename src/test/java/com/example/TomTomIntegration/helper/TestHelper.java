@@ -2,9 +2,10 @@ package com.example.TomTomIntegration.helper;
 
 import com.example.TomTomIntegration.dto.*;
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.entity.PoiEvent;
 import com.example.TomTomIntegration.entity.PoiLogsEntity;
 import com.example.TomTomIntegration.messaging.message.PoiInfo;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.*;
@@ -48,6 +49,7 @@ public class TestHelper {
             "\"score\":\"2.0041568279\",\"phone\":\"+1 503-227-0080\",\"streetNumber\":\"200\"," +
             "\"streetName\":\"Southwest Market Street\",\"country\":\"United States\",\"latitude\":\"45.511598\"," +
             "\"longitude\":\"-122.678607\"}";
+    public static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
 
     public static PoiTomTomResponse getPoiResponse() {
         return PoiTomTomResponse.builder()
@@ -167,17 +169,16 @@ public class TestHelper {
                 .build();
     }
 
-    public static PoiUpdateLogMessage getPoiUpdateLogMessage() {
-        return PoiUpdateLogMessage.builder()
-                .poiId(ID)
+    public static PoiLogMessage getPoiUpdateLogMessage() {
+        return PoiLogMessage.builder()
                 .poi(getPoiInfo())
+                .event(PoiEvent.UPDATED)
                 .build();
     }
 
     public static PoiLogsEntity getPoiLogsEntity() {
         return PoiLogsEntity.builder()
                 .id(ID)
-                .poiId(ID)
                 .poi(POI_INFO_JSON)
                 .time(LocalDateTime.now(Clock.systemDefaultZone()))
                 .build();

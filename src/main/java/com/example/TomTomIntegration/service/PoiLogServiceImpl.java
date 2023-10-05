@@ -1,7 +1,7 @@
 package com.example.TomTomIntegration.service;
 
-import com.example.TomTomIntegration.mapper.PoiUpdateLogMapper;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.mapper.PoiLogMapper;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.repository.PoiLogRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class PoiLogServiceImpl implements PoiLogService {
 
-    private final PoiUpdateLogMapper poiUpdateLogMapper;
+    private final PoiLogMapper poiLogMapper;
 
     private final PoiLogRepository poiLogRepository;
 
     @Override
-    public void createPoiLog(PoiUpdateLogMessage message) {
-        poiLogRepository.save(poiUpdateLogMapper.mapToPoiLogsEntity(message));
+    public void createPoiLog(PoiLogMessage message) {
+        poiLogRepository.save(poiLogMapper.mapToPoiLogsEntity(message));
     }
 }

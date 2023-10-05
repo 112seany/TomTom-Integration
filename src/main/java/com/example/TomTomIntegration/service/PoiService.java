@@ -5,15 +5,19 @@ import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 
+import java.util.List;
+
 public interface PoiService {
 
-    PoiTomTomResponse getPOI(String place);
+    PoiTomTomResponse getPoi(String place);
 
-    PoiResponse createPOI(PoiCreationRequest poiCreationRequest);
+    PoiResponse createPoi(PoiCreationRequest poiCreationRequest);
 
-    PoiResponse getPOIbyId(Long poiID);
+    PoiResponse getPoiById(Long poiId);
 
-    void deletePOI(Long poiID);
+    void deletePoi(Long poiId);
 
-    PoiResponse updatePOI(Long poiID, PoiUpdateRequest request);
+    PoiResponse updatePoi(Long poiId, PoiUpdateRequest request);
+
+    List<PoiResponse> getPoiList(String name);
 }

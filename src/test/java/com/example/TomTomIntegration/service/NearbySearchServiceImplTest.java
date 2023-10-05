@@ -39,10 +39,10 @@ public class NearbySearchServiceImplTest {
 
     @Test
     public void getNearbyPOI_ShouldReturnNearbySearchResponse() {
-        when(tomGateway.getNearbyPOI(LAT, LON)).thenReturn(nearbySearchDTO);
+        when(tomGateway.getNearbyPoi(LAT, LON)).thenReturn(nearbySearchDTO);
         when(nearbySearchMapper.mapToNearbySearchResponse(nearbySearchDTO)).thenReturn(nearbySearchResponse);
 
-        NearbySearchResponse actual = nearbySearchService.getNearbyPOI(LAT, LON);
+        NearbySearchResponse actual = nearbySearchService.getNearbyPoi(LAT, LON);
 
         assertEquals(actual, nearbySearchResponse);
     }

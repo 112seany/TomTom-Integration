@@ -30,7 +30,7 @@ public class RabbitConfiguration {
     @Value("${poi.logs.exchange}")
     private String poiLogsExchangeName;
 
-    @Value("${poi.logs.update.routing-key}")
+    @Value("${poi.logs.routing-key}")
     private String poiLogsRoutingKey;
 
     @Bean
@@ -53,7 +53,7 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public Queue myQueue() {
+    public Queue poiLogsQueue() {
         return new Queue(poiLogsQueueName);
     }
 
@@ -63,7 +63,7 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(poiLogsRoutingKey);
+    public Binding poiLogsBinding() {
+        return BindingBuilder.bind(poiLogsQueue()).to(exchange()).with(poiLogsRoutingKey);
     }
 }

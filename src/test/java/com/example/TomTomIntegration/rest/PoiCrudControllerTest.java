@@ -48,35 +48,35 @@ public class PoiCrudControllerTest {
 
     @Test
     public void createPOI_shouldReturnPoiCreationResponse() {
-        when(poiFacade.createPOI(poiCreationRequest)).thenReturn(poiCreationResponse);
+        when(poiFacade.createPoi(poiCreationRequest)).thenReturn(poiCreationResponse);
 
-        PoiResponse actual = poiCrudController.createPOI(poiCreationRequest);
+        PoiResponse actual = poiCrudController.createPoi(poiCreationRequest);
 
         assertEquals(actual, poiCreationResponse);
     }
 
     @Test
     public void getPOIbyID_shouldReturnPoiResponse() {
-        when(poiFacade.getPOIbyID(ID)).thenReturn(poiCreationResponse);
+        when(poiFacade.getPoiById(ID)).thenReturn(poiCreationResponse);
 
-        PoiResponse actual = poiCrudController.getPOIbyID(ID);
+        PoiResponse actual = poiCrudController.getPoiById(ID);
 
         assertEquals(actual, poiCreationResponse);
     }
 
     @Test
     public void updatePOI_shouldReturnUpdatedPoiResponse() {
-        when(poiFacade.updatePOI(ID, updateRequest)).thenReturn(poiCreationResponse);
+        when(poiFacade.updatePoi(ID, updateRequest)).thenReturn(poiCreationResponse);
 
-        PoiResponse actual = poiCrudController.updatePOI(ID, updateRequest);
+        PoiResponse actual = poiCrudController.updatePoi(ID, updateRequest);
 
         assertEquals(actual, poiCreationResponse);
     }
 
     @Test
     public void deletePOI_shouldDeletePOIbyGivenId() {
-        poiCrudController.deletePOI(ID);
+        poiCrudController.deletePoi(ID);
 
-        verify(poiFacade).deletePOI(ID);
+        verify(poiFacade).deletePoi(ID);
     }
 }

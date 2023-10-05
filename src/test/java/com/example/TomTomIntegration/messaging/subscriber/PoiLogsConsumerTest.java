@@ -1,7 +1,7 @@
 package com.example.TomTomIntegration.messaging.subscriber;
 
-import com.example.TomTomIntegration.messaging.consumer.PoiUpdateConsumer;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.consumer.PoiLogsConsumer;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.service.PoiLogService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,20 +13,20 @@ import static com.example.TomTomIntegration.helper.TestHelper.getPoiUpdateLogMes
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PoiUpdateConsumerTest {
+public class PoiLogsConsumerTest {
 
     @InjectMocks
-    private PoiUpdateConsumer poiUpdateConsumer;
+    private PoiLogsConsumer poiLogsConsumer;
 
     @Mock
     private PoiLogService poiLogService;
 
     @Test
     public void testProcessMyQueue() {
-        PoiUpdateLogMessage poiUpdateLogMessage = getPoiUpdateLogMessage();
+        PoiLogMessage poiLogMessage = getPoiUpdateLogMessage();
 
-        poiUpdateConsumer.process(poiUpdateLogMessage);
+        poiLogsConsumer.process(poiLogMessage);
 
-        verify(poiLogService).createPoiLog(poiUpdateLogMessage);
+        verify(poiLogService).createPoiLog(poiLogMessage);
     }
 }

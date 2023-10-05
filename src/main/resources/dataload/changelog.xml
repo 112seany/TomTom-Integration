@@ -39,9 +39,6 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="poi" type="json"/>
-            <column name="poi_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_poi_id" references="poi(id)"/>
-            </column>
         </createTable>
     </changeSet>
 
@@ -49,5 +46,8 @@
         <sql>ALTER TABLE poi_logs ADD COLUMN time timestamp</sql>
     </changeSet>
 
+    <changeSet id="5" author="112seany">
+        <sql>ALTER TABLE poi_logs ADD COLUMN event VARCHAR(255)</sql>
+    </changeSet>
 </databaseChangeLog>
 

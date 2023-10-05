@@ -2,12 +2,13 @@ package com.example.TomTomIntegration.service;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.entity.PoiEvent;
 import com.example.TomTomIntegration.exception.DuplicateException;
 import com.example.TomTomIntegration.exception.PoiNotFoundException;
 import com.example.TomTomIntegration.gateway.TomTomGateway;
+import com.example.TomTomIntegration.mapper.PoiLogMapper;
 import com.example.TomTomIntegration.mapper.PoiMapper;
-import com.example.TomTomIntegration.mapper.PoiUpdateLogMapper;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.messaging.publisher.RabbitMQPublisher;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
@@ -31,8 +32,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class PoiServiceImplTest {
 
-    private static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
-
     @Mock
     private TomTomGateway tomGateway;
 
@@ -40,7 +39,7 @@ public class PoiServiceImplTest {
     private PoiMapper poiMapper;
 
     @Mock
-    private PoiUpdateLogMapper poiUpdateLogMapper;
+    private PoiLogMapper poiLogMapper;
 
     @Mock
     private RabbitMQPublisher rabbitMQPublisher;
@@ -63,7 +62,7 @@ public class PoiServiceImplTest {
 
     private static PoiEntity poiEntity;
 
-    private static PoiUpdateLogMessage poiUpdateLogMessage;
+    private static PoiLogMessage poiLogMessage;
 
     @BeforeAll
     public static void setUp() {
@@ -75,15 +74,15 @@ public class PoiServiceImplTest {
         poiEntity = getPoiEntity();
         updateRequest = getPoiUpdateRequest();
 
-        poiUpdateLogMessage = getPoiUpdateLogMessage();
+        poiLogMessage = getPoiUpdateLogMessage();
     }
 
     @Test
     public void getPOI_shouldReturnPoiResponse() {
-        when(tomGateway.getPOI(POI)).thenReturn(poiDTO);
+        when(tomGateway.getPoi(POI)).thenReturn(poiDTO);
         when(poiMapper.mapToResponse(poiDTO)).thenReturn(poiResponse);
 
-        PoiTomTomResponse actual = tested.getPOI(POI);
+        PoiTomTomResponse actual = tested.getPoi(POI);
 
         assertEquals(poiResponse, actual);
     }
@@ -93,11 +92,14 @@ public class PoiServiceImplTest {
         when(poiMapper.mapToPOIEntity(creationRequest)).thenReturn(poiEntity);
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
+        when(poiLogMapper.mapToPoiLogMessage(poiEntity, PoiEvent.CREATED)).thenReturn(poiLogMessage);
 
-        PoiResponse actual = tested.createPOI(creationRequest);
+        PoiResponse actual = tested.createPoi(creationRequest);
 
         assertEquals(actual, creationResponse);
         verify(poiRepository).save(poiEntity);
+        verify(poiLogMapper).mapToPoiLogMessage(poiEntity, PoiEvent.CREATED);
+        verify(rabbitMQPublisher).sendPoiLogsMessage(poiLogMessage);
     }
 
     @Test
@@ -106,7 +108,7 @@ public class PoiServiceImplTest {
 
         when(poiRepository.findByName(creationRequest.getName())).thenReturn(poiEntity);
 
-        DuplicateException exception = assertThrows(DuplicateException.class, () -> tested.createPOI(creationRequest), expectedErrorMessage);
+        DuplicateException exception = assertThrows(DuplicateException.class, () -> tested.createPoi(creationRequest), expectedErrorMessage);
 
         assertEquals(expectedErrorMessage, exception.getMessage());
 
@@ -117,14 +119,14 @@ public class PoiServiceImplTest {
         when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
 
-        PoiResponse actual = tested.getPOIbyId(ID);
+        PoiResponse actual = tested.getPoiById(ID);
 
         assertEquals(actual, creationResponse);
     }
 
     @Test
     public void getPOIbyID_shouldThrowPoiNotFoundException() {
-        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.getPOIbyId(ID), POI_NOT_FOUND_ERROR_MESSAGE);
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.getPoiById(ID), POI_NOT_FOUND_ERROR_MESSAGE);
 
         assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
@@ -135,19 +137,19 @@ public class PoiServiceImplTest {
         when(poiMapper.mapToPOIEntityFromPoiUpdateRequest(poiEntity, updateRequest)).thenReturn(poiEntity);
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
         when(poiMapper.mapToPOICreationResponse(poiEntity)).thenReturn(creationResponse);
-        when(poiUpdateLogMapper.mapToPoiUpdateLogMessage(ID, poiEntity)).thenReturn(poiUpdateLogMessage);
+        when(poiLogMapper.mapToPoiLogMessage(poiEntity, PoiEvent.UPDATED)).thenReturn(poiLogMessage);
 
-        PoiResponse actual = tested.updatePOI(ID, updateRequest);
+        PoiResponse actual = tested.updatePoi(ID, updateRequest);
 
         assertEquals(actual, creationResponse);
         verify(poiRepository).save(poiEntity);
-        verify(poiUpdateLogMapper).mapToPoiUpdateLogMessage(ID, poiEntity);
-        verify(rabbitMQPublisher).sendPoiLogsUpdateMessage(poiUpdateLogMessage);
+        verify(poiLogMapper).mapToPoiLogMessage(poiEntity, PoiEvent.UPDATED);
+        verify(rabbitMQPublisher).sendPoiLogsMessage(poiLogMessage);
     }
 
     @Test
     public void updatePOI_shouldThrowPoiNotFoundException() {
-        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.updatePOI(ID, updateRequest), POI_NOT_FOUND_ERROR_MESSAGE);
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.updatePoi(ID, updateRequest), POI_NOT_FOUND_ERROR_MESSAGE);
 
         assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }
@@ -156,14 +158,18 @@ public class PoiServiceImplTest {
     public void deletePOI_shouldDeletePOIbyGivenId() {
         when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
 
-        tested.deletePOI(ID);
+        when(poiLogMapper.mapToPoiLogMessage(poiEntity, PoiEvent.DELETED)).thenReturn(poiLogMessage);
 
+        tested.deletePoi(ID);
+
+        verify(poiLogMapper).mapToPoiLogMessage(poiEntity, PoiEvent.DELETED);
+        verify(rabbitMQPublisher).sendPoiLogsMessage(poiLogMessage);
         verify(poiRepository).deleteById(ID);
     }
 
     @Test
     public void deletePOI_shouldThrowPoiNotFoundException() {
-        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.deletePOI(ID), POI_NOT_FOUND_ERROR_MESSAGE);
+        PoiNotFoundException exception = assertThrows(PoiNotFoundException.class, () -> tested.deletePoi(ID), POI_NOT_FOUND_ERROR_MESSAGE);
 
         assertEquals(POI_NOT_FOUND_ERROR_MESSAGE, exception.getMessage());
     }

@@ -30,10 +30,10 @@ public class PoiControllerTest {
     }
 
     @Test
-    public void getPOI_shouldReturnPoiResponse() {
-        when(poiFacade.getPOI(QUERY)).thenReturn(poiResponse);
+    public void getPoi_shouldReturnPoiResponse() {
+        when(poiFacade.getPoi(QUERY)).thenReturn(poiResponse);
 
-        PoiTomTomResponse actual = poiController.getPOI(QUERY);
+        PoiTomTomResponse actual = poiController.getPoi(QUERY);
 
         assertEquals(actual, poiResponse);
     }
