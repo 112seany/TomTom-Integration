@@ -1,6 +1,6 @@
 package com.example.TomTomIntegration.messaging.publisher;
 
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,11 +17,12 @@ public class RabbitMQPublisherImpl implements RabbitMQPublisher {
     @Value("${poi.logs.exchange}")
     private String poiLogsExchangeName;
 
-    @Value("${poi.logs.update.routing-key}")
+    @Value("${poi.logs.routing-key}")
     private String poiLogsRoutingKey;
 
     @Override
-    public void sendPoiLogsUpdateMessage(PoiUpdateLogMessage poiUpdateLogMessage) {
-        rabbitTemplate.convertAndSend(poiLogsExchangeName, poiLogsRoutingKey, poiUpdateLogMessage);
+    public void sendPoiLogsMessage(PoiLogMessage poiLogMessage) {
+        rabbitTemplate.convertAndSend(poiLogsExchangeName, poiLogsRoutingKey, poiLogMessage);
     }
+
 }

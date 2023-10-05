@@ -12,7 +12,7 @@ public class NearbySearchFacadeImpl implements NearbySearchFacade {
     private final NearbySearchService nearbySearchService;
 
     @Override
-    public NearbySearchResponse getNearbyPOI(Double latitude, Double longitude) {
-        return nearbySearchService.getNearbyPOI(latitude, longitude);
+    public NearbySearchResponse getNearbyPoi(Double latitude, Double longitude) {
+        return nearbySearchService.getNearbyPoi(latitude, longitude);
     }
 }

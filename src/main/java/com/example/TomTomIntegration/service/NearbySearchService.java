@@ -4,5 +4,5 @@ import com.example.TomTomIntegration.rest.response.NearbySearchResponse;
 
 public interface NearbySearchService {
 
-    NearbySearchResponse getNearbyPOI(Double latitude, Double longitude);
+    NearbySearchResponse getNearbyPoi(Double latitude, Double longitude);
 }

@@ -1,8 +1,9 @@
 package com.example.TomTomIntegration.mapper;
 
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.entity.PoiEvent;
 import com.example.TomTomIntegration.entity.PoiLogsEntity;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -12,17 +13,16 @@ import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PoiUpdateLogMapperTest {
+public class PoiLogMapperTest {
 
-    private final PoiUpdateLogMapper tested = Mappers.getMapper(PoiUpdateLogMapper.class);
+    private final PoiLogMapper tested = Mappers.getMapper(PoiLogMapper.class);
 
     @Test
     public void mapToPoiUpdateLogMessageTest() {
         PoiEntity entity = getPoiEntity();
 
-        PoiUpdateLogMessage actual = tested.mapToPoiUpdateLogMessage(entity.getId(), entity);
+        PoiLogMessage actual = tested.mapToPoiLogMessage(entity, PoiEvent.UPDATED);
 
-        assertEquals(entity.getId(), actual.getPoiId());
         assertEquals(entity.getName(), actual.getPoi().getName());
         assertEquals(entity.getPhone(), actual.getPoi().getPhone());
         assertEquals(entity.getScore(), actual.getPoi().getScore());
@@ -32,23 +32,24 @@ public class PoiUpdateLogMapperTest {
         assertEquals(entity.getLatitude(), actual.getPoi().getLatitude());
         assertEquals(entity.getLongitude(), actual.getPoi().getLongitude());
         assertEquals(entity.getId().toString(), actual.getPoi().getId());
+        assertEquals(PoiEvent.UPDATED, actual.getEvent());
     }
 
     @Test
     public void mapToPoiUpdateLogMessageTest_shouldReturnNullWhenPoiEntityIsNull() {
-        PoiUpdateLogMessage actual = tested.mapToPoiUpdateLogMessage(null, null);
+        PoiLogMessage actual = tested.mapToPoiLogMessage(null, null);
 
         assertNull(actual);
     }
 
     @Test
     public void mapToPoiLogsEntityTest() {
-        PoiUpdateLogMessage poiUpdateLogMessage = getPoiUpdateLogMessage();
+        PoiLogMessage poiLogMessage = getPoiUpdateLogMessage();
 
-        PoiLogsEntity poiLogsEntity = tested.mapToPoiLogsEntity(poiUpdateLogMessage);
+        PoiLogsEntity poiLogsEntity = tested.mapToPoiLogsEntity(poiLogMessage);
 
         assertNotNull(poiLogsEntity.getTime());
-        assertEquals(poiUpdateLogMessage.getPoiId(), poiLogsEntity.getPoiId());
+        assertEquals(poiLogMessage.getEvent(), poiLogsEntity.getEvent());
         assertEquals(poiLogsEntity.getPoi(), POI_INFO_JSON);
     }
 }

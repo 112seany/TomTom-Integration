@@ -1,8 +1,8 @@
 package com.example.TomTomIntegration.service;
 
 import com.example.TomTomIntegration.entity.PoiLogsEntity;
-import com.example.TomTomIntegration.mapper.PoiUpdateLogMapper;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.mapper.PoiLogMapper;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.repository.PoiLogRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class PoiLogServiceImplTest {
 
     @Mock
-    private PoiUpdateLogMapper poiUpdateLogMapper;
+    private PoiLogMapper poiLogMapper;
 
     @Mock
     private PoiLogRepository poiLogRepository;
@@ -28,13 +28,13 @@ public class PoiLogServiceImplTest {
     private PoiLogServiceImpl tested;
 
     @Test
-    public void createPoiLogTest() {
-        PoiUpdateLogMessage poiUpdateLogMessage = getPoiUpdateLogMessage();
+    public void createPoiLog_shouldSaveEntityToDatabase() {
+        PoiLogMessage poiLogMessage = getPoiUpdateLogMessage();
         PoiLogsEntity poiLogsEntity = getPoiLogsEntity();
 
-        when(poiUpdateLogMapper.mapToPoiLogsEntity(poiUpdateLogMessage)).thenReturn(poiLogsEntity);
+        when(poiLogMapper.mapToPoiLogsEntity(poiLogMessage)).thenReturn(poiLogsEntity);
 
-        tested.createPoiLog(poiUpdateLogMessage);
+        tested.createPoiLog(poiLogMessage);
 
         verify(poiLogRepository).save(poiLogsEntity);
     }

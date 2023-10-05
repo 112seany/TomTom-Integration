@@ -53,19 +53,19 @@ public class TomTomGatewayImplTest {
     }
 
     @Test
-    public void getPoiTest_shouldReturnPoiDTO() {
+    public void getPoi_shouldReturnPoiDTO() {
         when(restTemplate.getForEntity(uri, PoiDTO.class)).thenReturn(new ResponseEntity<>(poiDTO, HttpStatus.OK));
 
-        PoiDTO actual = tomTomGateway.getPOI(POI);
+        PoiDTO actual = tomTomGateway.getPoi(POI);
 
         assertEquals(poiDTO, actual);
     }
 
     @Test
-    public void getNearbyPOI_shouldReturnNearbySearchDTO() {
+    public void getNearbyPoi_shouldReturnNearbySearchDTO() {
         when(restTemplate.getForEntity(nearbySearchUri, NearbySearchDTO.class)).thenReturn(new ResponseEntity<>(nearbySearchDTO, HttpStatus.OK));
 
-        NearbySearchDTO actual = tomTomGateway.getNearbyPOI(LAT, LON);
+        NearbySearchDTO actual = tomTomGateway.getNearbyPoi(LAT, LON);
 
         assertEquals(actual, nearbySearchDTO);
     }

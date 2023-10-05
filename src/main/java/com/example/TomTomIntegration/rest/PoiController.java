@@ -17,8 +17,8 @@ public class PoiController {
 
     @GetPoiAPI
     @GetMapping("/poi/{place}")
-    public PoiTomTomResponse getPOI(@Parameter(name = "/place", description = "Place name", example = "Restaurant")
+    public PoiTomTomResponse getPoi(@Parameter(name = "/place", description = "Place name", example = "Restaurant")
                                   @PathVariable(value = "place") String place) {
-        return poiFacade.getPOI(place);
+        return poiFacade.getPoi(place);
     }
 }

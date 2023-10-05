@@ -1,7 +1,6 @@
 package com.example.TomTomIntegration.rest;
 
 import com.example.TomTomIntegration.facade.NearbySearchFacade;
-import com.example.TomTomIntegration.helper.TestHelper;
 import com.example.TomTomIntegration.rest.response.NearbySearchResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,10 +31,10 @@ public class NearbySearchControllerTest {
     }
 
     @Test
-    public void getNearbyPOI_shouldReturnNearbySearchResponse() {
-        when(nearbySearchFacade.getNearbyPOI(LAT,LON)).thenReturn(nearbySearchResponse);
+    public void getNearbyPoi_shouldReturnNearbySearchResponse() {
+        when(nearbySearchFacade.getNearbyPoi(LAT,LON)).thenReturn(nearbySearchResponse);
 
-        NearbySearchResponse actual = nearbySearchController.getNearbyPOI(LAT,LON);
+        NearbySearchResponse actual = nearbySearchController.getNearbyPoi(LAT,LON);
 
         assertEquals(actual, nearbySearchResponse);
     }

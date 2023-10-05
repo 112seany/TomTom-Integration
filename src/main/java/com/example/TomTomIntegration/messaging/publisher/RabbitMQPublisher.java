@@ -1,8 +1,9 @@
 package com.example.TomTomIntegration.messaging.publisher;
 
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 
 public interface RabbitMQPublisher {
 
-    void sendPoiLogsUpdateMessage(PoiUpdateLogMessage poiUpdateLogMessage);
+    void sendPoiLogsMessage(PoiLogMessage poiLogMessage);
+
 }

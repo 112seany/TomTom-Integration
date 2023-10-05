@@ -42,45 +42,45 @@ public class PoiFacadeImplTest {
     }
 
     @Test
-    public void getPOITest_shouldReturnPoiResponse() {
-        when(poiService.getPOI(POI)).thenReturn(poiResponse);
+    public void getPoi_shouldReturnPoiResponse() {
+        when(poiService.getPoi(POI)).thenReturn(poiResponse);
 
-        PoiTomTomResponse actual = poiFacade.getPOI(POI);
+        PoiTomTomResponse actual = poiFacade.getPoi(POI);
 
         assertEquals(poiResponse, actual);
     }
 
     @Test
-    public void createPOI_shouldReturnPoiCreationResponse() {
-        when(poiService.createPOI(poiCreationRequest)).thenReturn(poiCreationResponse);
+    public void createPoi_shouldReturnPoiCreationResponse() {
+        when(poiService.createPoi(poiCreationRequest)).thenReturn(poiCreationResponse);
 
-        PoiResponse actual = poiFacade.createPOI(poiCreationRequest);
-
-        assertEquals(actual, poiCreationResponse);
-    }
-
-    @Test
-    public void getPOIbyID_shouldReturnPoiCreationResponse() {
-        when(poiService.getPOIbyId(ID)).thenReturn(poiCreationResponse);
-
-        PoiResponse actual = poiFacade.getPOIbyID(ID);
+        PoiResponse actual = poiFacade.createPoi(poiCreationRequest);
 
         assertEquals(actual, poiCreationResponse);
     }
 
     @Test
-    public void UpdatePOI_shouldReturnUpdatedPoiResponse() {
-        when(poiService.updatePOI(ID, updateRequest)).thenReturn(poiCreationResponse);
+    public void getPoiById_shouldReturnPoiCreationResponse() {
+        when(poiService.getPoiById(ID)).thenReturn(poiCreationResponse);
 
-        PoiResponse actual = poiFacade.updatePOI(ID, updateRequest);
+        PoiResponse actual = poiFacade.getPoiById(ID);
 
         assertEquals(actual, poiCreationResponse);
     }
 
     @Test
-    public void deletePOI_shouldDeletePOIbyGivenId() {
-        poiFacade.deletePOI(ID);
+    public void UpdatePoi_shouldReturnUpdatedPoiResponse() {
+        when(poiService.updatePoi(ID, updateRequest)).thenReturn(poiCreationResponse);
 
-        verify(poiService).deletePOI(ID);
+        PoiResponse actual = poiFacade.updatePoi(ID, updateRequest);
+
+        assertEquals(actual, poiCreationResponse);
+    }
+
+    @Test
+    public void deletePoi_shouldDeletePOIbyGivenId() {
+        poiFacade.deletePoi(ID);
+
+        verify(poiService).deletePoi(ID);
     }
 }

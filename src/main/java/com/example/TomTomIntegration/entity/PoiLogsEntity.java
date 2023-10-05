@@ -27,10 +27,11 @@ public class PoiLogsEntity {
     @Column(name = "poi", columnDefinition = "json")
     private String poi;
 
-    @Column(name = "poi_id")
-    private Long poiId;
-
     @Builder.Default
     @Column(name = "time", columnDefinition = "timestamp")
     private LocalDateTime time = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event")
+    private PoiEvent event;
 }

@@ -27,6 +27,8 @@ public interface PoiMapper {
 
     PoiResponse mapToPOICreationResponse(PoiEntity entity);
 
+    List<PoiResponse> mapToPoiResponseList(List<PoiEntity> entities);
+
     default List<PoiInfoResponse> mapResultDTOsToPoiInfoResponses(List<ResultDTO> sourceList) {
         return sourceList.stream().map(this::mapResultDTOtoPoiInfoResponse).collect(Collectors.toList());
     }

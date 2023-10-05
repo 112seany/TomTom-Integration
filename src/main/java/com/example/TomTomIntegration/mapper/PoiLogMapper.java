@@ -1,26 +1,27 @@
 package com.example.TomTomIntegration.mapper;
 
 import com.example.TomTomIntegration.entity.PoiEntity;
+import com.example.TomTomIntegration.entity.PoiEvent;
 import com.example.TomTomIntegration.entity.PoiLogsEntity;
 import com.example.TomTomIntegration.messaging.message.PoiInfo;
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface PoiUpdateLogMapper {
+public interface PoiLogMapper {
 
     @Mapping(target = "poi", expression = "java(mapPoiEntityToPoiInfo(poi))")
-    PoiUpdateLogMessage mapToPoiUpdateLogMessage(Long poiId, PoiEntity poi);
+    PoiLogMessage mapToPoiLogMessage(PoiEntity poi, PoiEvent event);
 
-    default PoiLogsEntity mapToPoiLogsEntity(PoiUpdateLogMessage poiUpdateLogMessage) {
+    default PoiLogsEntity mapToPoiLogsEntity(PoiLogMessage poiLogMessage) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return PoiLogsEntity.builder()
-                    .poiId(poiUpdateLogMessage.getPoiId())
-                    .poi(objectMapper.writeValueAsString(poiUpdateLogMessage.getPoi()))
+                    .poi(objectMapper.writeValueAsString(poiLogMessage.getPoi()))
+                    .event(poiLogMessage.getEvent())
                     .build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

@@ -20,13 +20,13 @@ public class NearbySearchController {
 
     @GetNearbyPoiAPI
     @GetMapping("/poi/nearby-search")
-    public NearbySearchResponse getNearbyPOI(@RequestParam(value = "lat")
+    public NearbySearchResponse getNearbyPoi(@RequestParam(value = "lat")
                                              @DecimalMin(value = "-90", message = "Latitude should be between -90 and 90")
                                              @DecimalMax(value = "90", message = "Latitude should be between -90 and 90") Double latitude,
                                              @RequestParam(value = "lon")
                                              @DecimalMin(value = "-180", message = "Longitude should be between -180 and 180")
                                              @DecimalMax(value = "180", message = "Longitude should be between -180 and 180") Double longitude) {
 
-        return nearbySearchFacade.getNearbyPOI(latitude, longitude);
+        return nearbySearchFacade.getNearbyPoi(latitude, longitude);
     }
 }

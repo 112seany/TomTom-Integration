@@ -12,6 +12,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/poi/place")
@@ -21,25 +23,31 @@ public class PoiCrudController {
 
     @CreatePoiAPI
     @PostMapping
-    public PoiResponse createPOI(@RequestBody @Valid PoiCreationRequest request) {
-        return poiFacade.createPOI(request);
+    public PoiResponse createPoi(@RequestBody @Valid PoiCreationRequest request) {
+        return poiFacade.createPoi(request);
     }
 
     @GetPoiByIdAPI
     @GetMapping("/{poiId}")
-    public PoiResponse getPOIbyID(@PathVariable(value = "poiId") Long poiId) {
-        return poiFacade.getPOIbyID(poiId);
+    public PoiResponse getPoiById(@PathVariable(value = "poiId") Long poiId) {
+        return poiFacade.getPoiById(poiId);
     }
 
     @UpdatePoiAPI
     @PutMapping("/{poiId}")
-    public PoiResponse updatePOI(@PathVariable(value = "poiId") Long poiId, @RequestBody @Valid PoiUpdateRequest request) {
-        return poiFacade.updatePOI(poiId, request);
+    public PoiResponse updatePoi(@PathVariable(value = "poiId") Long poiId, @RequestBody @Valid PoiUpdateRequest request) {
+        return poiFacade.updatePoi(poiId, request);
     }
 
     @DeletePoiAPI
     @DeleteMapping("/{poiId}")
-    public void deletePOI(@PathVariable(value = "poiId") Long poiId) {
-        poiFacade.deletePOI(poiId);
+    public void deletePoi(@PathVariable(value = "poiId") Long poiId) {
+        poiFacade.deletePoi(poiId);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<PoiResponse> getPoiList(@RequestParam(value = "name") String name) {
+        return poiFacade.getPoiList(name);
     }
 }

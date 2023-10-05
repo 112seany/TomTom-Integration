@@ -1,6 +1,6 @@
 package com.example.TomTomIntegration.messaging.publisher;
 
-import com.example.TomTomIntegration.messaging.message.PoiUpdateLogMessage;
+import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ public class RabbitMQPublisherImplTest {
     private static final String POI_LOGS_EXCHANGE_NAME = "poiLogsExchangeName";
     private static final String POI_LOGS_EXCHANGE = "exchange";
     private static final String POI_LOGS_ROUTING_KEY_NAME = "poiLogsRoutingKey";
-    private static final String POI_LOGS_ROUTING_KEY= "routing-key";
+    private static final String POI_LOGS_ROUTING_KEY = "routing-key";
 
     private RabbitMQPublisher rabbitMQPublisher;
 
@@ -37,10 +37,10 @@ public class RabbitMQPublisherImplTest {
 
     @Test
     public void testSendMessage() {
-        PoiUpdateLogMessage poiUpdateLogMessage = getPoiUpdateLogMessage();
+        PoiLogMessage poiLogMessage = getPoiUpdateLogMessage();
 
-        rabbitMQPublisher.sendPoiLogsUpdateMessage(poiUpdateLogMessage);
+        rabbitMQPublisher.sendPoiLogsMessage(poiLogMessage);
 
-        verify(rabbitTemplate).convertAndSend(POI_LOGS_EXCHANGE, POI_LOGS_ROUTING_KEY, poiUpdateLogMessage);
+        verify(rabbitTemplate).convertAndSend(POI_LOGS_EXCHANGE, POI_LOGS_ROUTING_KEY, poiLogMessage);
     }
 }

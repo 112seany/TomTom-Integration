@@ -1,5 +1,6 @@
 package com.example.TomTomIntegration.messaging.message;
 
+import com.example.TomTomIntegration.entity.PoiEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,9 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PoiUpdateLogMessage implements Serializable {
-
-    private Long poiId;
+public class PoiLogMessage implements Serializable {
 
     private PoiInfo poi;
+
+    private PoiEvent event;
 }

@@ -23,7 +23,7 @@ public class TomTomGatewayImpl implements TomTomGateway {
     private RestTemplate restTemplate;
 
     @Override
-    public PoiDTO getPOI(String place) {
+    public PoiDTO getPoi(String place) {
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(GET_POI_URL)
                 .path(place + ".json")
                 .queryParam("key", apiKey)
@@ -34,7 +34,7 @@ public class TomTomGatewayImpl implements TomTomGateway {
         return response.getBody();
     }
 
-    public NearbySearchDTO getNearbyPOI(Double latitude, Double longitude) {
+    public NearbySearchDTO getNearbyPoi(Double latitude, Double longitude) {
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(GET_NEARBY_POI_URL)
                 .queryParam("key", apiKey)
                 .queryParam("lon", longitude)

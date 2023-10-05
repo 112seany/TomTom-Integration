@@ -5,7 +5,7 @@ import com.example.TomTomIntegration.dto.PoiDTO;
 
 public interface TomTomGateway {
 
-    PoiDTO getPOI(String place);
+    PoiDTO getPoi(String place);
 
-    NearbySearchDTO getNearbyPOI(Double latitude, Double longitude);
+    NearbySearchDTO getNearbyPoi(Double latitude, Double longitude);
 }

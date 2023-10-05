@@ -16,8 +16,8 @@ public class NearbySearchServiceImpl implements NearbySearchService {
     private final NearbySearchMapper nearbySearchMapper;
 
     @Override
-    public NearbySearchResponse getNearbyPOI(Double latitude, Double longitude) {
-        NearbySearchDTO nearbySearchDTO = tomGateway.getNearbyPOI(latitude, longitude);
+    public NearbySearchResponse getNearbyPoi(Double latitude, Double longitude) {
+        NearbySearchDTO nearbySearchDTO = tomGateway.getNearbyPoi(latitude, longitude);
 
         return nearbySearchMapper.mapToNearbySearchResponse(nearbySearchDTO);
     }
