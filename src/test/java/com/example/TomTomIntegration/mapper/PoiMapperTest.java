@@ -13,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,7 +72,7 @@ public class PoiMapperTest {
 
     @Test
     public void mapToPOIEntity() {
-        PoiEntity actual = tested.mapToPOIEntity(creationRequest);
+        PoiEntity actual = tested.mapToPoiEntity(creationRequest);
 
         assertThat(actual).usingRecursiveComparison()
                 .ignoringFields("id")
@@ -79,29 +81,39 @@ public class PoiMapperTest {
 
     @Test
     public void mapToPoiEntity_shouldReturnNullWhenCreationRequestIsNull() {
-        PoiEntity actual = tested.mapToPOIEntity(null);
+        PoiEntity actual = tested.mapToPoiEntity(null);
 
         assertNull(actual);
     }
 
     @Test
     public void mapToPOIEntityFromPoiUpdateRequest() {
-        PoiEntity actual = tested.mapToPOIEntityFromPoiUpdateRequest(entity, poiUpdateRequest);
+        PoiEntity actual = tested.mapToPoiEntityFromPoiUpdateRequest(entity, poiUpdateRequest);
 
         assertEquals(actual, entity);
     }
 
     @Test
-    public void mapToPOICreationResponse() {
-        PoiResponse actual = tested.mapToPOICreationResponse(entity);
+    public void mapToPoiCreationResponse() {
+        PoiResponse actual = tested.mapToPoiCreationResponse(entity);
 
         assertEquals(actual, poiResponse);
     }
 
     @Test
     public void mapToPoiCreationResponse_shouldReturnNullWhenEntityIsNull() {
-        PoiResponse actual = tested.mapToPOICreationResponse(null);
+        assertNull(tested.mapToPoiCreationResponse(null));
+    }
 
-        assertNull(actual);
+    @Test
+    public void mapToPoiResponseList() {
+        List<PoiResponse> actual = tested.mapToPoiResponseList(getPoiEntityList());
+
+        assertEquals(actual, getPoiResponseList());
+    }
+
+    @Test
+    public void mapToPoiResponseList_shouldReturnNullWhenEntityIsNull() {
+        assertNull(tested.mapToPoiResponseList(null));
     }
 }

@@ -15,7 +15,9 @@ import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
+import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,20 +48,20 @@ public class PoiServiceImpl implements PoiService {
     public PoiResponse createPoi(PoiCreationRequest poiCreationRequest) {
         checkIsPoiDuplicate(poiCreationRequest.getName());
 
-        PoiEntity poiEntity = poiMapper.mapToPOIEntity(poiCreationRequest);
+        PoiEntity poiEntity = poiMapper.mapToPoiEntity(poiCreationRequest);
         PoiEntity savedEntity = poiRepository.save(poiEntity);
 
         PoiLogMessage poiLogMessage = poiLogMapper.mapToPoiLogMessage(savedEntity, PoiEvent.CREATED);
         rabbitMQPublisher.sendPoiLogsMessage(poiLogMessage);
 
-        return poiMapper.mapToPOICreationResponse(savedEntity);
+        return poiMapper.mapToPoiCreationResponse(savedEntity);
     }
 
     @Override
     public PoiResponse getPoiById(Long poiId) {
         PoiEntity entity = checkIfPoiExists(poiId);
 
-        return poiMapper.mapToPOICreationResponse(entity);
+        return poiMapper.mapToPoiCreationResponse(entity);
     }
 
     @Override
@@ -75,9 +77,9 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public PoiResponse updatePoi(Long poiId, PoiUpdateRequest request) {
         PoiEntity entity = checkIfPoiExists(poiId);
-        PoiEntity entityToSave = poiMapper.mapToPOIEntityFromPoiUpdateRequest(entity, request);
+        PoiEntity entityToSave = poiMapper.mapToPoiEntityFromPoiUpdateRequest(entity, request);
 
-        PoiResponse response = poiMapper.mapToPOICreationResponse(poiRepository.save(entityToSave));
+        PoiResponse response = poiMapper.mapToPoiCreationResponse(poiRepository.save(entityToSave));
 
         PoiLogMessage poiLogMessage = poiLogMapper.mapToPoiLogMessage(entityToSave, PoiEvent.UPDATED);
         rabbitMQPublisher.sendPoiLogsMessage(poiLogMessage);
@@ -86,8 +88,12 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<PoiResponse> getPoiList(String name) {
-        return poiMapper.mapToPoiResponseList(poiRepository.findByNameContaining(name));
+    public List<PoiResponse> getPoiList(String name, PageRequest pageRequest) {
+        if (StringUtils.isBlank(name)) {
+            return poiMapper.mapToPoiResponseList(poiRepository.findAll(pageRequest).getContent());
+        } else {
+            return poiMapper.mapToPoiResponseList(poiRepository.findByNameContaining(name, pageRequest).getContent());
+        }
     }
 
     private PoiEntity checkIfPoiExists(Long poiId) {

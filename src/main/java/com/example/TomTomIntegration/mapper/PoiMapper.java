@@ -23,9 +23,9 @@ public interface PoiMapper {
     @Mapping(target = "poiInfoResponse", expression = "java(mapResultDTOsToPoiInfoResponses(poiDTO.getResultDTO()))")
     PoiTomTomResponse mapToResponse(PoiDTO poiDTO);
 
-    PoiEntity mapToPOIEntity(PoiCreationRequest request);
+    PoiEntity mapToPoiEntity(PoiCreationRequest request);
 
-    PoiResponse mapToPOICreationResponse(PoiEntity entity);
+    PoiResponse mapToPoiCreationResponse(PoiEntity entity);
 
     List<PoiResponse> mapToPoiResponseList(List<PoiEntity> entities);
 
@@ -47,7 +47,7 @@ public interface PoiMapper {
                 .build();
     }
 
-    default PoiEntity mapToPOIEntityFromPoiUpdateRequest(PoiEntity entity, PoiUpdateRequest request) {
+    default PoiEntity mapToPoiEntityFromPoiUpdateRequest(PoiEntity entity, PoiUpdateRequest request) {
         return PoiEntity.builder()
                 .id(entity.getId())
                 .name(request.getName())
