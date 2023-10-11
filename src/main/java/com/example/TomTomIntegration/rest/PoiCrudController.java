@@ -3,16 +3,13 @@ package com.example.TomTomIntegration.rest;
 import com.example.TomTomIntegration.facade.PoiFacade;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
+import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
-import com.example.TomTomIntegration.rest.swagger.CreatePoiAPI;
-import com.example.TomTomIntegration.rest.swagger.DeletePoiAPI;
-import com.example.TomTomIntegration.rest.swagger.GetPoiByIdAPI;
-import com.example.TomTomIntegration.rest.swagger.UpdatePoiAPI;
+import com.example.TomTomIntegration.rest.swagger.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -47,7 +44,10 @@ public class PoiCrudController {
 
     @GetMapping
     @ResponseBody
-    public List<PoiResponse> getPoiList(@RequestParam(value = "name") String name) {
-        return poiFacade.getPoiList(name);
+    @GetPoiList
+    public PageablePoiResponse getPoiList(@RequestParam(required = false) String name,
+                                          @RequestParam(required = false, defaultValue = "0") int page,
+                                          @RequestParam(required = false, defaultValue = "10") int size) {
+        return poiFacade.getPoiList(name, PageRequest.of(page, size));
     }
 }

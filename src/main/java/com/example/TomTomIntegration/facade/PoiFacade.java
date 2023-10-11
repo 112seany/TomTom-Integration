@@ -2,10 +2,10 @@ package com.example.TomTomIntegration.facade;
 
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
+import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
-
-import java.util.List;
+import org.springframework.data.domain.PageRequest;
 
 public interface PoiFacade {
 
@@ -19,5 +19,5 @@ public interface PoiFacade {
 
     PoiResponse updatePoi(Long poiId, PoiUpdateRequest request);
 
-    List<PoiResponse> getPoiList(String name);
+    PageablePoiResponse getPoiList(String name, PageRequest pageRequest);
 }

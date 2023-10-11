@@ -2,10 +2,12 @@ package com.example.TomTomIntegration.facade;
 
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
+import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import com.example.TomTomIntegration.service.PoiService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -42,7 +44,14 @@ public class PoiFacadeImpl implements PoiFacade {
     }
 
     @Override
-    public List<PoiResponse> getPoiList(String name) {
-        return poiService.getPoiList(name);
+    public PageablePoiResponse getPoiList(String name, PageRequest pageRequest) {
+        List<PoiResponse> poiList = poiService.getPoiList(name, pageRequest);
+
+        return PageablePoiResponse.builder()
+                .page(pageRequest.getPageNumber())
+                .size(pageRequest.getPageSize())
+                .numOfResults(poiList.size())
+                .pois(poiList)
+                .build();
     }
 }

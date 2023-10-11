@@ -34,7 +34,7 @@ public class TestHelper {
     public static final String OFFSET = "0";
     public static final String NUM_RESULTS = "10";
     public static final String TOTAL_RESULTS = "27";
-    public static final String RESTAURANT_NAME = "Restaraunt Murata";
+    public static final String RESTAURANT = "Restaraunt Murata";
     public static final String PHONE_NUMBER = "+1 503-227-0080";
     public static final String LATITUDE = "45.511598";
     public static final String LONGITUDE = "-122.678607";
@@ -50,6 +50,9 @@ public class TestHelper {
             "\"streetName\":\"Southwest Market Street\",\"country\":\"United States\",\"latitude\":\"45.511598\"," +
             "\"longitude\":\"-122.678607\"}";
     public static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
+    public static String TEST_NAME_FOR_GET_POI_LIST_METHOD = "Dail";
+    public static String WRONG_PAGE_INDEX_MESSAGE = "Page index must not be less than zero";
+    public static String WRONG_SIZE_MESSAGE = "Page size must not be less than one";
 
     public static PoiTomTomResponse getPoiResponse() {
         return PoiTomTomResponse.builder()
@@ -107,7 +110,7 @@ public class TestHelper {
         return PoiCreationRequest.builder()
                 .phone(PHONE_NUMBER)
                 .score(SCORE)
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .country(COUNTRY_USA)
                 .streetNumber(STREET_NUMBER)
                 .streetName(STREET_NAME)
@@ -121,7 +124,7 @@ public class TestHelper {
                 .id(ID.toString())
                 .phone(PHONE_NUMBER)
                 .score(SCORE)
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .country(COUNTRY_USA)
                 .streetNumber(STREET_NUMBER)
                 .streetName(STREET_NAME)
@@ -135,7 +138,7 @@ public class TestHelper {
                 .id(ID)
                 .phone(PHONE_NUMBER)
                 .score(SCORE)
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .country(COUNTRY_USA)
                 .streetNumber(STREET_NUMBER)
                 .streetName(STREET_NAME)
@@ -148,7 +151,7 @@ public class TestHelper {
         return PoiUpdateRequest.builder()
                 .phone(PHONE_NUMBER)
                 .score(SCORE)
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .country(COUNTRY_USA)
                 .streetNumber(STREET_NUMBER)
                 .streetName(STREET_NAME)
@@ -184,10 +187,48 @@ public class TestHelper {
                 .build();
     }
 
+    public static List<PoiResponse> getPoiResponseList() {
+        return Arrays.asList(PoiResponse.builder()
+                .id(ID.toString())
+                .name(RESTAURANT)
+                .score(SCORE)
+                .country(COUNTRY_USA)
+                .streetName(STREET_NAME)
+                .streetNumber(STREET_NUMBER)
+                .phone(PHONE_NUMBER)
+                .longitude(LONGITUDE)
+                .latitude(LATITUDE)
+                .build());
+    }
+
+    public static List<PoiEntity> getPoiEntityList() {
+        return Arrays.asList(PoiEntity.builder()
+                .id(ID)
+                .name(RESTAURANT)
+                .score(SCORE)
+                .country(COUNTRY_USA)
+                .streetName(STREET_NAME)
+                .streetNumber(STREET_NUMBER)
+                .phone(PHONE_NUMBER)
+                .longitude(LONGITUDE)
+                .latitude(LATITUDE)
+                .build());
+    }
+
+    public static PageablePoiResponse getPageablePoiResponse() {
+        List<PoiResponse> poiList = getPoiResponseList();
+        return PageablePoiResponse.builder()
+                .pois(getPoiResponseList())
+                .numOfResults(poiList.size())
+                .page(0)
+                .size(1)
+                .build();
+    }
+
     private static PoiInfo getPoiInfo() {
         return PoiInfo.builder()
                 .id(ID.toString())
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .score(SCORE)
                 .country(COUNTRY_USA)
                 .streetName(STREET_NAME)
@@ -201,7 +242,7 @@ public class TestHelper {
     private static List<NearbySearchInfoResponse> getNearbySearchInfoResponse() {
         return Arrays.asList(NearbySearchInfoResponse.builder()
                 .phone(PHONE_NUMBER)
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .score(SCORE)
                 .countryCode(COUNTRY_CODE)
                 .streetName(STREET_NAME)
@@ -226,7 +267,7 @@ public class TestHelper {
 
     private static PoiInfoDTO getPoiInfoDTO() {
         return PoiInfoDTO.builder()
-                .name(RESTAURANT_NAME)
+                .name(RESTAURANT)
                 .phone(PHONE_NUMBER)
                 .build();
     }
