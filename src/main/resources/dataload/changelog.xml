@@ -21,7 +21,6 @@
 
     <changeSet id="2" author="112seany">
         <insert tableName="poi">
-            <column name="id" value="1"/>
             <column name="name" value="Restaurant Bavaria"/>
             <column name="score" value="2.341233"/>
             <column name="phone" value="+123-456-7890"/>
@@ -48,6 +47,22 @@
 
     <changeSet id="5" author="112seany">
         <sql>ALTER TABLE poi_logs ADD COLUMN event VARCHAR(255)</sql>
+    </changeSet>
+
+    <changeSet id="6" author="112seany">
+        <loadData file="/data/pois.csv"
+                  relativeToChangelogFile="true"
+                  separator=","
+                  tableName="poi">
+            <column name="name"/>
+            <column name="score"/>
+            <column name="phone"/>
+            <column name="street_number"/>
+            <column name="street_name"/>
+            <column name="country"/>
+            <column name="latitude"/>
+            <column name="longitude"/>
+        </loadData>
     </changeSet>
 </databaseChangeLog>
 
