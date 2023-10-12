@@ -1,0 +1,202 @@
+{
+  "info": {
+    "_postman_id": "81f54f0d-ff3f-45d8-9d58-a90912acdb34",
+    "name": "Poi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28422228"
+  },
+  "item": [
+    {
+      "name": "Get Poi list",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "name",
+            "value": "Dail",
+            "type": "text"
+          },
+          {
+            "key": "page",
+            "value": "0",
+            "type": "text"
+          },
+          {
+            "key": "size",
+            "value": "10",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/poi/place?name=Dail&page=0&size=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "poi",
+            "place"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "Dail"
+            },
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Poi",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/poi/place/15",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "poi",
+            "place",
+            "15"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Poi",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Restaraunt Murataaaa\", \r\n    \"phone\": \"+1 503-227-0080\", \r\n    \"score\": \"2.0041568279\", \r\n    \"country\": \"United States\", \r\n    \"latitude\": \"45.511598\", \r\n    \"longitude\": \"-122.678607\", \r\n    \"streetName\": \"Southwest Market Street\", \r\n    \"streetNumber\": \"200\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/poi/place",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "poi",
+            "place"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Poi",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": \"1\", \r\n    \"name\": \"Restaraunt Murata\", \r\n    \"phone\": \"+1 503-227-0080\", \r\n    \"score\": \"2.0041568279\", \r\n    \"country\": \"United States\", \r\n    \"latitude\": \"45.511598\", \r\n    \"longitude\": \"-122.678607\", \r\n    \"streetName\": \"Southwest Market Street\", \r\n    \"streetNumber\": \"200\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/poi/place/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "poi",
+            "place",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Find Pois(TomTom Api)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/poi/nearby-search?lat=41&lon=43",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "poi",
+            "nearby-search"
+          ],
+          "query": [
+            {
+              "key": "lat",
+              "value": "41"
+            },
+            {
+              "key": "lon",
+              "value": "43"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Poi by name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/poi/cafe",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "poi",
+            "cafe"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
