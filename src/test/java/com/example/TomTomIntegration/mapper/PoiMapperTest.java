@@ -15,8 +15,7 @@ import java.util.List;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PoiMapperTest {
@@ -90,5 +89,34 @@ public class PoiMapperTest {
     @Test
     public void mapToPoiResponseList_shouldReturnNullWhenEntityIsNull() {
         assertNull(tested.mapToPoiResponseList(null));
+    }
+
+    @Test
+    public void mapToPoiDTOList() {
+        List<PoiDTO> actual = tested.mapToPoiDTOList(List.of(entity));
+
+        assertEquals(actual, poiDTOList);
+    }
+
+    @Test
+    public void mapToPoiDTOList_shouldReturnEmptyListWhenEntityListIsEmpty() {
+        assertTrue(tested.mapToPoiDTOList(List.of()).isEmpty());
+    }
+
+    @Test
+    public void mapToPoiDTOList_shouldReturnNullWhenEntityListIsNull() {
+        assertNull(tested.mapToPoiDTOList(null));
+    }
+
+    @Test
+    public void mapToPoiDTO() {
+        PoiDTO actual = tested.mapToPoiDTO(entity);
+
+        assertEquals(actual, poiDTO);
+    }
+
+    @Test
+    public void mapToPoiDTO_shouldReturnNullWhenEntityIsNull() {
+        assertNull(tested.mapToPoiDTO(null));
     }
 }
