@@ -1,5 +1,7 @@
 package com.example.TomTomIntegration.facade;
 
+import com.example.TomTomIntegration.gateway.resources.NearbySearchDTO;
+import com.example.TomTomIntegration.mapper.NearbySearchMapper;
 import com.example.TomTomIntegration.rest.response.NearbySearchResponse;
 import com.example.TomTomIntegration.service.NearbySearchService;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,19 +21,26 @@ public class NearbySearchFacadeImplTest {
     @Mock
     private NearbySearchService nearbySearchService;
 
+    @Mock
+    private NearbySearchMapper nearbySearchMapper;
+
     @InjectMocks
     private NearbySearchFacadeImpl nearbySearchFacade;
 
     private static NearbySearchResponse nearbySearchResponse;
 
+    private static NearbySearchDTO nearbySearchDTO;
+
     @BeforeAll
     public static void setUp() {
         nearbySearchResponse = getNearbySearchResponse();
+        nearbySearchDTO = getNearbySearchDTO();
     }
 
     @Test
     public void getNearbyPoi_shouldReturn_NearbySearchResponse() {
-        when(nearbySearchService.getNearbyPoi(LAT,LON)).thenReturn(nearbySearchResponse);
+        when(nearbySearchService.getNearbyPoi(LAT,LON)).thenReturn(nearbySearchDTO);
+        when(nearbySearchMapper.mapToNearbySearchResponse(nearbySearchDTO)).thenReturn(nearbySearchResponse);
 
         NearbySearchResponse actual = nearbySearchFacade.getNearbyPoi(LAT,LON);
 

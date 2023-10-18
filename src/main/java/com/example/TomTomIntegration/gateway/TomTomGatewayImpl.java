@@ -1,7 +1,7 @@
 package com.example.TomTomIntegration.gateway;
 
-import com.example.TomTomIntegration.dto.NearbySearchDTO;
-import com.example.TomTomIntegration.dto.PoiDTO;
+import com.example.TomTomIntegration.gateway.resources.NearbySearchDTO;
+import com.example.TomTomIntegration.gateway.resources.PoiTomTomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,17 +23,18 @@ public class TomTomGatewayImpl implements TomTomGateway {
     private RestTemplate restTemplate;
 
     @Override
-    public PoiDTO getPoi(String place) {
+    public PoiTomTomDTO getPoi(String place) {
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(GET_POI_URL)
                 .path(place + ".json")
                 .queryParam("key", apiKey)
                 .build();
 
-        ResponseEntity<PoiDTO> response = restTemplate.getForEntity(uriComponents.toUri(), PoiDTO.class);
+        ResponseEntity<PoiTomTomDTO> response = restTemplate.getForEntity(uriComponents.toUri(), PoiTomTomDTO.class);
 
         return response.getBody();
     }
 
+    @Override
     public NearbySearchDTO getNearbyPoi(Double latitude, Double longitude) {
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(GET_NEARBY_POI_URL)
                 .queryParam("key", apiKey)

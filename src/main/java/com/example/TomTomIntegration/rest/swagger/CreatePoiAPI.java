@@ -24,7 +24,7 @@ import static com.example.TomTomIntegration.rest.swagger.example.DuplicateExcept
         content = @Content(schema = @Schema(implementation = CreatePoiRequestBodyExample.class),
                 examples = {@ExampleObject(value = REQUEST_BODY_CREATE_POI)}))
 @Operation(summary = "Create POI", description = "Returns created POI")
-@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully created",
+@ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Successfully created",
         content = {@Content(mediaType = "application/json", schema = @Schema(implementation = CreatedPoiExample.class),
                 examples = {@ExampleObject(name = "Successfully created",value = CREATED_POI)})}),
         @ApiResponse(responseCode = "404", description = "Poi with name 'Restaurant Bavaria' already exists", content = {

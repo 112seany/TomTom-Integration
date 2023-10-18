@@ -18,7 +18,7 @@ public class PoiLogMapperTest {
     private final PoiLogMapper tested = Mappers.getMapper(PoiLogMapper.class);
 
     @Test
-    public void mapToPoiUpdateLogMessageTest() {
+    public void mapToPoiLogMessageTest() {
         PoiEntity entity = getPoiEntity();
 
         PoiLogMessage actual = tested.mapToPoiLogMessage(entity, PoiEvent.UPDATED);
@@ -36,7 +36,7 @@ public class PoiLogMapperTest {
     }
 
     @Test
-    public void mapToPoiUpdateLogMessageTest_shouldReturnNullWhenPoiEntityIsNull() {
+    public void mapToPoiLogMessageTest_shouldReturnNullWhenPoiEntityIsNull() {
         PoiLogMessage actual = tested.mapToPoiLogMessage(null, null);
 
         assertNull(actual);

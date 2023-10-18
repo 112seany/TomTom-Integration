@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,8 +35,8 @@ public class NearbySearchControllerTest {
     public void getNearbyPoi_shouldReturnNearbySearchResponse() {
         when(nearbySearchFacade.getNearbyPoi(LAT,LON)).thenReturn(nearbySearchResponse);
 
-        NearbySearchResponse actual = nearbySearchController.getNearbyPoi(LAT,LON);
+        ResponseEntity<NearbySearchResponse> actual = nearbySearchController.getNearbyPoi(LAT,LON);
 
-        assertEquals(actual, nearbySearchResponse);
+        assertEquals(actual, ResponseEntity.ok(nearbySearchResponse));
     }
 }

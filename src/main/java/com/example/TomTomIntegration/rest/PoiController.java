@@ -6,6 +6,7 @@ import com.example.TomTomIntegration.rest.swagger.GetPoiAPI;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +18,8 @@ public class PoiController {
 
     @GetPoiAPI
     @GetMapping("/poi/{place}")
-    public PoiTomTomResponse getPoi(@Parameter(name = "/place", description = "Place name", example = "Restaurant")
+    public ResponseEntity<PoiTomTomResponse> getPoi(@Parameter(name = "/place", description = "Place name", example = "Restaurant")
                                   @PathVariable(value = "place") String place) {
-        return poiFacade.getPoi(place);
+        return ResponseEntity.ok(poiFacade.getPoi(place));
     }
 }

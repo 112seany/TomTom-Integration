@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,15 +27,16 @@ public class PoiControllerTest {
 
     @BeforeAll
     public static void setUp() {
-        poiResponse = getPoiResponse();
+        poiResponse = getPoiTomTomResponse();
+
     }
 
     @Test
     public void getPoi_shouldReturnPoiResponse() {
         when(poiFacade.getPoi(QUERY)).thenReturn(poiResponse);
 
-        PoiTomTomResponse actual = poiController.getPoi(QUERY);
+        ResponseEntity<PoiTomTomResponse> actual = poiController.getPoi(QUERY);
 
-        assertEquals(actual, poiResponse);
+        assertEquals(actual, ResponseEntity.ok(poiResponse));
     }
 }

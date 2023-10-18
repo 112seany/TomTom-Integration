@@ -1,9 +1,10 @@
 package com.example.TomTomIntegration.helper;
 
-import com.example.TomTomIntegration.dto.*;
+import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.entity.PoiEvent;
 import com.example.TomTomIntegration.entity.PoiLogsEntity;
+import com.example.TomTomIntegration.gateway.resources.*;
 import com.example.TomTomIntegration.messaging.message.PoiInfo;
 import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
@@ -54,7 +55,7 @@ public class TestHelper {
     public static String WRONG_PAGE_INDEX_MESSAGE = "Page index must not be less than zero";
     public static String WRONG_SIZE_MESSAGE = "Page size must not be less than one";
 
-    public static PoiTomTomResponse getPoiResponse() {
+    public static PoiTomTomResponse getPoiTomTomResponse() {
         return PoiTomTomResponse.builder()
                 .poiInfoResponse(getPoiInfoResponse())
                 .numberResults(getSummaryDTO().getNumResults())
@@ -99,8 +100,8 @@ public class TestHelper {
                 .build().toUri();
     }
 
-    public static PoiDTO getPoiDTO() {
-        return PoiDTO.builder()
+    public static PoiTomTomDTO getPoiTomTomDto() {
+        return PoiTomTomDTO.builder()
                 .resultDTO(getResultDTO())
                 .summaryDTO(getSummaryDTO())
                 .build();
@@ -167,7 +168,7 @@ public class TestHelper {
     }
 
     public static NearbySearchResponse getNearbySearchResponse() {
-        return NearbySearchResponse.builder()
+        return  NearbySearchResponse.builder()
                 .results(getNearbySearchInfoResponse())
                 .build();
     }
@@ -223,6 +224,24 @@ public class TestHelper {
                 .page(0)
                 .size(1)
                 .build();
+    }
+
+    public static PoiDTO getPoiDto() {
+        return PoiDTO.builder()
+                .id(ID.toString())
+                .name(RESTAURANT)
+                .score(SCORE)
+                .country(COUNTRY_USA)
+                .streetName(STREET_NAME)
+                .streetNumber(STREET_NUMBER)
+                .phone(PHONE_NUMBER)
+                .longitude(LONGITUDE)
+                .latitude(LATITUDE)
+                .build();
+    }
+
+    public static List<PoiDTO> getPoiDtoList() {
+        return Arrays.asList(getPoiDto());
     }
 
     private static PoiInfo getPoiInfo() {

@@ -1,5 +1,7 @@
 package com.example.TomTomIntegration.facade;
 
+import com.example.TomTomIntegration.mapper.PoiMapper;
+import com.example.TomTomIntegration.mapper.PoiTomTomMapper;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
@@ -18,19 +20,23 @@ public class PoiFacadeImpl implements PoiFacade {
 
     private final PoiService poiService;
 
+    private final PoiMapper poiMapper;
+
+    private final PoiTomTomMapper poiTomTomMapper;
+
     @Override
     public PoiTomTomResponse getPoi(String place) {
-        return poiService.getPoi(place);
+        return poiTomTomMapper.mapToResponse(poiService.getPoi(place));
     }
 
     @Override
     public PoiResponse createPoi(PoiCreationRequest poiCreationRequest) {
-        return poiService.createPoi(poiCreationRequest);
+        return poiMapper.mapToPoiResponse(poiService.createPoi(poiCreationRequest));
     }
 
     @Override
     public PoiResponse getPoiById(Long poiId) {
-        return poiService.getPoiById(poiId);
+        return poiMapper.mapToPoiResponse(poiService.getPoiById(poiId));
     }
 
     @Override
@@ -40,12 +46,12 @@ public class PoiFacadeImpl implements PoiFacade {
 
     @Override
     public PoiResponse updatePoi(Long poiId, PoiUpdateRequest request) {
-        return poiService.updatePoi(poiId, request);
+        return poiMapper.mapToPoiResponse(poiService.updatePoi(poiId, request));
     }
 
     @Override
     public PageablePoiResponse getPoiList(String name, PageRequest pageRequest) {
-        List<PoiResponse> poiList = poiService.getPoiList(name, pageRequest);
+        List<PoiResponse> poiList = poiMapper.mapToPoiResponseList(poiService.getPoiList(name, pageRequest));
 
         return PageablePoiResponse.builder()
                 .page(pageRequest.getPageNumber())
