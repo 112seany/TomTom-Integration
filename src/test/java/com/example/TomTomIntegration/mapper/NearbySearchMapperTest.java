@@ -1,8 +1,7 @@
 package com.example.TomTomIntegration.mapper;
 
-import com.example.TomTomIntegration.dto.NearbySearchDTO;
+import com.example.TomTomIntegration.gateway.resources.NearbySearchDTO;
 import com.example.TomTomIntegration.rest.response.NearbySearchResponse;
-import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class NearbySearchMapperTest {

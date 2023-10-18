@@ -1,6 +1,7 @@
 package com.example.TomTomIntegration.service;
 
 import com.example.TomTomIntegration.dto.PoiDTO;
+import com.example.TomTomIntegration.gateway.resources.PoiTomTomDTO;
 import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.entity.PoiEvent;
 import com.example.TomTomIntegration.exception.DuplicateException;
@@ -55,7 +56,7 @@ public class PoiServiceImplTest {
     @InjectMocks
     private PoiServiceImpl tested;
 
-    private static PoiDTO poiDTO;
+    private static PoiTomTomDTO poiTomTomDTO;
 
     private static PoiTomTomResponse poiResponse;
 
@@ -69,43 +70,51 @@ public class PoiServiceImplTest {
 
     private static PoiLogMessage poiLogMessage;
 
+    private static Page<PoiDTO> poiDTOPage;
+
     private static Page<PoiEntity> poiEntitiesPage;
+
+
+    private static PoiDTO poiDTO;
 
     @BeforeAll
     public static void setUp() {
-        poiDTO = getPoiDTO();
-        poiResponse = getPoiResponse();
+        poiTomTomDTO = getPoiTomTomDto();
+        poiResponse = getPoiTomTomResponse();
 
         creationRequest = getPoiCreationRequest();
         creationResponse = getPoiCreationResponse();
         poiEntity = getPoiEntity();
         updateRequest = getPoiUpdateRequest();
+        poiDTO = getPoiDto();
 
         poiLogMessage = getPoiUpdateLogMessage();
 
         poiEntitiesPage = new PageImpl<>(getPoiEntityList());
+
+        poiDTOPage = new PageImpl<>(getPoiDtoList());
+
     }
 
     @Test
     public void getPoi_shouldReturnPoiResponse() {
-        when(tomGateway.getPoi(POI)).thenReturn(poiDTO);
-        when(poiMapper.mapToResponse(poiDTO)).thenReturn(poiResponse);
+        when(tomGateway.getPoi(POI)).thenReturn(poiTomTomDTO);
 
-        PoiTomTomResponse actual = tested.getPoi(POI);
+        PoiTomTomDTO actual = tested.getPoi(POI);
 
-        assertEquals(poiResponse, actual);
+        assertEquals(poiTomTomDTO, actual);
     }
 
     @Test
     public void createPoi_shouldReturnPoiCreationResponse() {
         when(poiMapper.mapToPoiEntity(creationRequest)).thenReturn(poiEntity);
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
-        when(poiMapper.mapToPoiCreationResponse(poiEntity)).thenReturn(creationResponse);
+        when(poiMapper.mapToPoiDTO(poiEntity)).thenReturn(poiDTO);
         when(poiLogMapper.mapToPoiLogMessage(poiEntity, PoiEvent.CREATED)).thenReturn(poiLogMessage);
 
-        PoiResponse actual = tested.createPoi(creationRequest);
+        PoiDTO actual = tested.createPoi(creationRequest);
 
-        assertEquals(actual, creationResponse);
+        assertEquals(actual, poiDTO);
         verify(poiRepository).save(poiEntity);
         verify(poiLogMapper).mapToPoiLogMessage(poiEntity, PoiEvent.CREATED);
         verify(rabbitMQPublisher).sendPoiLogsMessage(poiLogMessage);
@@ -126,11 +135,11 @@ public class PoiServiceImplTest {
     @Test
     public void getPOIbyID_shouldReturnPoiResponse() {
         when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
-        when(poiMapper.mapToPoiCreationResponse(poiEntity)).thenReturn(creationResponse);
+        when(poiMapper.mapToPoiDTO(poiEntity)).thenReturn(poiDTO);
 
-        PoiResponse actual = tested.getPoiById(ID);
+        PoiDTO actual = tested.getPoiById(ID);
 
-        assertEquals(actual, creationResponse);
+        assertEquals(actual, poiDTO);
     }
 
     @Test
@@ -145,12 +154,12 @@ public class PoiServiceImplTest {
         when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
         when(poiMapper.mapToPoiEntityFromPoiUpdateRequest(poiEntity, updateRequest)).thenReturn(poiEntity);
         when(poiRepository.save(poiEntity)).thenReturn(poiEntity);
-        when(poiMapper.mapToPoiCreationResponse(poiEntity)).thenReturn(creationResponse);
+        when(poiMapper.mapToPoiDTO(poiEntity)).thenReturn(poiDTO);
         when(poiLogMapper.mapToPoiLogMessage(poiEntity, PoiEvent.UPDATED)).thenReturn(poiLogMessage);
 
-        PoiResponse actual = tested.updatePoi(ID, updateRequest);
+        PoiDTO actual = tested.updatePoi(ID, updateRequest);
 
-        assertEquals(actual, creationResponse);
+        assertEquals(actual, poiDTO);
         verify(poiRepository).save(poiEntity);
         verify(poiLogMapper).mapToPoiLogMessage(poiEntity, PoiEvent.UPDATED);
         verify(rabbitMQPublisher).sendPoiLogsMessage(poiLogMessage);
@@ -186,28 +195,28 @@ public class PoiServiceImplTest {
     @Test
     public void getPoiListWhenNameIsEmpty_shouldReturnList() {
         when(poiRepository.findAll(PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
-        when(poiMapper.mapToPoiResponseList(poiEntitiesPage.getContent())).thenReturn(getPoiResponseList());
+        when(poiMapper.mapToPoiDTOList(poiEntitiesPage.getContent())).thenReturn(poiDTOPage.getContent());
 
-        List<PoiResponse> actual = tested.getPoiList(StringUtils.EMPTY, PageRequest.of(0,1));
+        List<PoiDTO> actual = tested.getPoiList(StringUtils.EMPTY, PageRequest.of(0,1));
 
-        assertEquals(actual, getPoiResponseList());
+        assertEquals(actual, getPoiDtoList());
 
         verify(poiRepository, never()).findByNameContaining(StringUtils.EMPTY, PageRequest.of(0,1));
         verify(poiRepository).findAll(PageRequest.of(0,1));
-        verify(poiMapper).mapToPoiResponseList(poiEntitiesPage.getContent());
+        verify(poiMapper).mapToPoiDTOList(poiEntitiesPage.getContent());
     }
 
     @Test
     public void getPoiListWhenNameIsNotEmpty_shouldReturnList() {
         when(poiRepository.findByNameContaining(RESTAURANT, PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
-        when(poiMapper.mapToPoiResponseList(poiEntitiesPage.getContent())).thenReturn(getPoiResponseList());
+        when(poiMapper.mapToPoiDTOList(poiEntitiesPage.getContent())).thenReturn(poiDTOPage.getContent());
 
-        List<PoiResponse> actual = tested.getPoiList(RESTAURANT, PageRequest.of(0,1));
+        List<PoiDTO> actual = tested.getPoiList(RESTAURANT, PageRequest.of(0,1));
 
-        assertEquals(actual, getPoiResponseList());
+        assertEquals(actual, poiDTOPage.getContent());
 
         verify(poiRepository, never()).findAll(PageRequest.of(0,1));
         verify(poiRepository).findByNameContaining(RESTAURANT, PageRequest.of(0,1));
-        verify(poiMapper).mapToPoiResponseList(poiEntitiesPage.getContent());
+        verify(poiMapper).mapToPoiDTOList(poiEntitiesPage.getContent());
     }
 }

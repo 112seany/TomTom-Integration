@@ -9,7 +9,10 @@ import com.example.TomTomIntegration.rest.swagger.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @AllArgsConstructor
@@ -20,34 +23,36 @@ public class PoiCrudController {
 
     @CreatePoiAPI
     @PostMapping
-    public PoiResponse createPoi(@RequestBody @Valid PoiCreationRequest request) {
-        return poiFacade.createPoi(request);
+    public ResponseEntity<PoiResponse> createPoi(@RequestBody @Valid PoiCreationRequest request) {
+        return ResponseEntity.status(CREATED).body(poiFacade.createPoi(request));
     }
 
     @GetPoiByIdAPI
     @GetMapping("/{poiId}")
-    public PoiResponse getPoiById(@PathVariable(value = "poiId") Long poiId) {
-        return poiFacade.getPoiById(poiId);
+    public ResponseEntity<PoiResponse> getPoiById(@PathVariable(value = "poiId") Long poiId) {
+        return ResponseEntity.ok(poiFacade.getPoiById(poiId));
     }
 
     @UpdatePoiAPI
     @PutMapping("/{poiId}")
-    public PoiResponse updatePoi(@PathVariable(value = "poiId") Long poiId, @RequestBody @Valid PoiUpdateRequest request) {
-        return poiFacade.updatePoi(poiId, request);
+    public ResponseEntity<PoiResponse> updatePoi(@PathVariable(value = "poiId") Long poiId, @RequestBody @Valid PoiUpdateRequest request) {
+        return ResponseEntity.ok(poiFacade.updatePoi(poiId, request));
     }
 
     @DeletePoiAPI
     @DeleteMapping("/{poiId}")
-    public void deletePoi(@PathVariable(value = "poiId") Long poiId) {
+    public ResponseEntity<Void> deletePoi(@PathVariable(value = "poiId") Long poiId) {
         poiFacade.deletePoi(poiId);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     @ResponseBody
     @GetPoiList
-    public PageablePoiResponse getPoiList(@RequestParam(required = false) String name,
+    public ResponseEntity<PageablePoiResponse> getPoiList(@RequestParam(required = false) String name,
                                           @RequestParam(required = false, defaultValue = "0") int page,
                                           @RequestParam(required = false, defaultValue = "10") int size) {
-        return poiFacade.getPoiList(name, PageRequest.of(page, size));
+        return ResponseEntity.ok(poiFacade.getPoiList(name, PageRequest.of(page, size)));
     }
 }

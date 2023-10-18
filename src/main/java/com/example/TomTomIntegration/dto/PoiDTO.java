@@ -1,12 +1,9 @@
 package com.example.TomTomIntegration.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -14,9 +11,21 @@ import java.util.List;
 @AllArgsConstructor
 public class PoiDTO {
 
-    @JsonProperty(value = "summary")
-    private SummaryDTO summaryDTO;
+    private String id;
 
-    @JsonProperty(value = "results")
-    private List<ResultDTO> resultDTO;
+    private String name;
+
+    private String score;
+
+    private String phone;
+
+    private String streetNumber;
+
+    private String streetName;
+
+    private String country;
+
+    private String latitude;
+
+    private String longitude;
 }

@@ -1,7 +1,7 @@
 package com.example.TomTomIntegration.gateway;
 
-import com.example.TomTomIntegration.dto.NearbySearchDTO;
-import com.example.TomTomIntegration.dto.PoiDTO;
+import com.example.TomTomIntegration.gateway.resources.NearbySearchDTO;
+import com.example.TomTomIntegration.gateway.resources.PoiTomTomDTO;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ public class TomTomGatewayImplTest {
 
     private static URI uri;
 
-    private static PoiDTO poiDTO;
+    private static PoiTomTomDTO poiTomTomDTO;
 
     private static NearbySearchDTO nearbySearchDTO;
 
@@ -41,7 +41,7 @@ public class TomTomGatewayImplTest {
     @BeforeAll
     public static void setUp() {
         uri = getPoiUri();
-        poiDTO = PoiDTO.builder()
+        poiTomTomDTO = PoiTomTomDTO.builder()
                 .summaryDTO(getSummaryDTO())
                 .resultDTO(getResultDTO())
                 .build();
@@ -54,11 +54,11 @@ public class TomTomGatewayImplTest {
 
     @Test
     public void getPoi_shouldReturnPoiDTO() {
-        when(restTemplate.getForEntity(uri, PoiDTO.class)).thenReturn(new ResponseEntity<>(poiDTO, HttpStatus.OK));
+        when(restTemplate.getForEntity(uri, PoiTomTomDTO.class)).thenReturn(new ResponseEntity<>(poiTomTomDTO, HttpStatus.OK));
 
-        PoiDTO actual = tomTomGateway.getPoi(POI);
+        PoiTomTomDTO actual = tomTomGateway.getPoi(POI);
 
-        assertEquals(poiDTO, actual);
+        assertEquals(poiTomTomDTO, actual);
     }
 
     @Test

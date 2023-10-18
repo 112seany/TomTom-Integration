@@ -1,6 +1,5 @@
 package com.example.TomTomIntegration.rest;
 
-import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.facade.PoiFacade;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
@@ -13,12 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 
 import static com.example.TomTomIntegration.helper.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @ExtendWith(MockitoExtension.class)
 public class PoiCrudControllerTest {
@@ -29,47 +30,44 @@ public class PoiCrudControllerTest {
     @InjectMocks
     private PoiCrudController poiCrudController;
 
-    private static PoiResponse poiCreationResponse;
+    private static PoiResponse poiResponse;
 
     private static PoiCreationRequest poiCreationRequest;
 
     private static PoiUpdateRequest updateRequest;
 
-    private static PoiEntity entity;
-
     @BeforeAll
     public static void setUp() {
         poiCreationRequest = getPoiCreationRequest();
-        poiCreationResponse = getPoiCreationResponse();
+        poiResponse = getPoiCreationResponse();
         updateRequest = getPoiUpdateRequest();
-        entity = getPoiEntity();
     }
 
     @Test
     public void createPoi_shouldReturnPoiCreationResponse() {
-        when(poiFacade.createPoi(poiCreationRequest)).thenReturn(poiCreationResponse);
+        when(poiFacade.createPoi(poiCreationRequest)).thenReturn(poiResponse);
 
-        PoiResponse actual = poiCrudController.createPoi(poiCreationRequest);
+        ResponseEntity<PoiResponse> actual = poiCrudController.createPoi(poiCreationRequest);
 
-        assertEquals(actual, poiCreationResponse);
+        assertEquals(actual, ResponseEntity.status(CREATED).body(poiResponse));
     }
 
     @Test
     public void getPoiById_shouldReturnPoiResponse() {
-        when(poiFacade.getPoiById(ID)).thenReturn(poiCreationResponse);
+        when(poiFacade.getPoiById(ID)).thenReturn(poiResponse);
 
-        PoiResponse actual = poiCrudController.getPoiById(ID);
+        ResponseEntity<PoiResponse> actual = poiCrudController.getPoiById(ID);
 
-        assertEquals(actual, poiCreationResponse);
+        assertEquals(actual, ResponseEntity.ok(poiResponse));
     }
 
     @Test
     public void updatePoi_shouldReturnUpdatedPoiResponse() {
-        when(poiFacade.updatePoi(ID, updateRequest)).thenReturn(poiCreationResponse);
+        when(poiFacade.updatePoi(ID, updateRequest)).thenReturn(poiResponse);
 
-        PoiResponse actual = poiCrudController.updatePoi(ID, updateRequest);
+        ResponseEntity<PoiResponse> actual = poiCrudController.updatePoi(ID, updateRequest);
 
-        assertEquals(actual, poiCreationResponse);
+        assertEquals(actual, ResponseEntity.ok(poiResponse));
     }
 
     @Test
@@ -83,9 +81,9 @@ public class PoiCrudControllerTest {
     public void getPoiList_shouldReturnPageablePoiResponse() {
         when(poiFacade.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, PageRequest.of(0, 1))).thenReturn(getPageablePoiResponse());
 
-        PageablePoiResponse actual = poiCrudController.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, 0, 1);
+        ResponseEntity<PageablePoiResponse> actual = poiCrudController.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, 0, 1);
 
-        assertEquals(actual, getPageablePoiResponse());
+        assertEquals(actual, ResponseEntity.ok(getPageablePoiResponse()));
     }
 
     @Test

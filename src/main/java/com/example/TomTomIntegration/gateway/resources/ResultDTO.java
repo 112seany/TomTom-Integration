@@ -1,4 +1,4 @@
-package com.example.TomTomIntegration.dto;
+package com.example.TomTomIntegration.gateway.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

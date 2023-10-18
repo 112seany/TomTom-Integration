@@ -1,8 +1,8 @@
 package com.example.TomTomIntegration.service;
 
-import com.example.TomTomIntegration.rest.response.NearbySearchResponse;
+import com.example.TomTomIntegration.gateway.resources.NearbySearchDTO;
 
 public interface NearbySearchService {
 
-    NearbySearchResponse getNearbyPoi(Double latitude, Double longitude);
+    NearbySearchDTO getNearbyPoi(Double latitude, Double longitude);
 }
