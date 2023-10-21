@@ -13,14 +13,15 @@ import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.messaging.publisher.RabbitMQPublisher;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
-import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -95,13 +96,20 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<PoiDTO> getPoiList(String name, PageRequest pageRequest) {
-        if (StringUtils.isBlank(name)) {
+    public List<PoiDTO> getPoiList(PoiSearchRequest searchRequest, PageRequest pageRequest) {
+        if (Objects.isNull(searchRequest)) {
             log.info("Find all pois by page [{}] and size [{}]", pageRequest.getPageNumber(), pageRequest.getPageSize());
+
             return poiMapper.mapToPoiDTOList(poiRepository.findAll(pageRequest).getContent());
         } else {
-            log.info("Find all pois by name [{}], page [{}] and size [{}]", name, pageRequest.getPageNumber(), pageRequest.getPageSize());
-            return poiMapper.mapToPoiDTOList(poiRepository.findByNameContaining(name, pageRequest).getContent());
+            log.info("Find all pois by name [{}], scoreMin [{}], scoreMax [{}], country [{}], page [{}] and size [{}]",
+                    searchRequest.getName(), searchRequest.getScoreMin(), searchRequest.getScoreMax(), searchRequest.getCountry(),
+                    pageRequest.getPageNumber(), pageRequest.getPageSize());
+
+            List<PoiEntity> poiEntities = poiRepository.searchPoi(searchRequest.getName(), searchRequest.getScoreMin(),
+                    searchRequest.getScoreMax(), searchRequest.getCountry(), pageRequest).getContent();
+
+            return poiMapper.mapToPoiDTOList(poiEntities);
         }
     }
 

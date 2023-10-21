@@ -2,6 +2,7 @@ package com.example.TomTomIntegration.rest;
 
 import com.example.TomTomIntegration.facade.PoiFacade;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
@@ -50,9 +51,9 @@ public class PoiCrudController {
     @GetMapping
     @ResponseBody
     @GetPoiList
-    public ResponseEntity<PageablePoiResponse> getPoiList(@RequestParam(required = false) String name,
-                                          @RequestParam(required = false, defaultValue = "0") int page,
-                                          @RequestParam(required = false, defaultValue = "10") int size) {
-        return ResponseEntity.ok(poiFacade.getPoiList(name, PageRequest.of(page, size)));
+    public ResponseEntity<PageablePoiResponse> getPoiList(@Valid PoiSearchRequest searchRequest,
+                                                          @RequestParam(required = false, defaultValue = "0") int page,
+                                                          @RequestParam(required = false, defaultValue = "10") int size) {
+        return ResponseEntity.ok(poiFacade.getPoiList(searchRequest, PageRequest.of(page, size)));
     }
 }

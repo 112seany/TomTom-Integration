@@ -3,6 +3,7 @@ package com.example.TomTomIntegration.service;
 import com.example.TomTomIntegration.dto.PoiDTO;
 import com.example.TomTomIntegration.gateway.resources.PoiTomTomDTO;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import org.springframework.data.domain.PageRequest;
 
@@ -20,5 +21,5 @@ public interface PoiService {
 
     PoiDTO updatePoi(Long poiId, PoiUpdateRequest request);
 
-    List<PoiDTO> getPoiList(String name, PageRequest pageRequest);
+    List<PoiDTO> getPoiList(PoiSearchRequest searchRequest, PageRequest pageRequest);
 }

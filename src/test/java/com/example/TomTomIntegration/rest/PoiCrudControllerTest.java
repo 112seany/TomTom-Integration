@@ -2,6 +2,7 @@ package com.example.TomTomIntegration.rest;
 
 import com.example.TomTomIntegration.facade.PoiFacade;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
@@ -36,11 +37,14 @@ public class PoiCrudControllerTest {
 
     private static PoiUpdateRequest updateRequest;
 
+    private static PoiSearchRequest poiSearchRequest;
+
     @BeforeAll
     public static void setUp() {
         poiCreationRequest = getPoiCreationRequest();
         poiResponse = getPoiCreationResponse();
         updateRequest = getPoiUpdateRequest();
+        poiSearchRequest = getPoiSearchRequest();
     }
 
     @Test
@@ -79,22 +83,22 @@ public class PoiCrudControllerTest {
 
     @Test
     public void getPoiList_shouldReturnPageablePoiResponse() {
-        when(poiFacade.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, PageRequest.of(0, 1))).thenReturn(getPageablePoiResponse());
+        when(poiFacade.getPoiList(poiSearchRequest, PageRequest.of(0, 1))).thenReturn(getPageablePoiResponse());
 
-        ResponseEntity<PageablePoiResponse> actual = poiCrudController.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, 0, 1);
+        ResponseEntity<PageablePoiResponse> actual = poiCrudController.getPoiList(poiSearchRequest, 0, 1);
 
         assertEquals(actual, ResponseEntity.ok(getPageablePoiResponse()));
     }
 
     @Test
     public void getPoiList_shouldThrowExceptionIfPageSizeLessOrEqualsZero() {
-        assertThrows(IllegalArgumentException.class, () -> poiCrudController.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, 0, 0),
+        assertThrows(IllegalArgumentException.class, () -> poiCrudController.getPoiList(poiSearchRequest, 0, 0),
                 WRONG_SIZE_MESSAGE);
     }
 
     @Test
     public void getPoiList_shouldThrowExceptionIfPageLessZero() {
-        assertThrows(IllegalArgumentException.class, () -> poiCrudController.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, -1, 10),
+        assertThrows(IllegalArgumentException.class, () -> poiCrudController.getPoiList(poiSearchRequest, -1, 10),
                 WRONG_PAGE_INDEX_MESSAGE);
     }
 }

@@ -3,6 +3,7 @@ package com.example.TomTomIntegration.facade;
 import com.example.TomTomIntegration.mapper.PoiMapper;
 import com.example.TomTomIntegration.mapper.PoiTomTomMapper;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
@@ -50,8 +51,8 @@ public class PoiFacadeImpl implements PoiFacade {
     }
 
     @Override
-    public PageablePoiResponse getPoiList(String name, PageRequest pageRequest) {
-        List<PoiResponse> poiList = poiMapper.mapToPoiResponseList(poiService.getPoiList(name, pageRequest));
+    public PageablePoiResponse getPoiList(PoiSearchRequest searchRequest, PageRequest pageRequest) {
+        List<PoiResponse> poiList = poiMapper.mapToPoiResponseList(poiService.getPoiList(searchRequest, pageRequest));
 
         return PageablePoiResponse.builder()
                 .page(pageRequest.getPageNumber())

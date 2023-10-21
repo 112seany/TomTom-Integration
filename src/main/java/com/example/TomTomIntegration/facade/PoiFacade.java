@@ -1,6 +1,7 @@
 package com.example.TomTomIntegration.facade;
 
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
@@ -19,5 +20,5 @@ public interface PoiFacade {
 
     PoiResponse updatePoi(Long poiId, PoiUpdateRequest request);
 
-    PageablePoiResponse getPoiList(String name, PageRequest pageRequest);
+    PageablePoiResponse getPoiList(PoiSearchRequest searchRequest, PageRequest pageRequest);
 }

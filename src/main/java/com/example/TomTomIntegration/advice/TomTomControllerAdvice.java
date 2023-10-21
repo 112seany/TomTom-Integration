@@ -4,6 +4,7 @@ import com.example.TomTomIntegration.exception.DuplicateException;
 import com.example.TomTomIntegration.exception.PoiNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -25,7 +26,12 @@ public class TomTomControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Response> handleIllegalArgumentException(IllegalArgumentException e) {
         Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Response> handleBindException(BindException e) {
+        Response response = new Response("Score should be between 0 and 5");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
