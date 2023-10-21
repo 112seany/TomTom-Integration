@@ -195,7 +195,7 @@ public class PoiServiceImplTest {
     }
 
     @Test
-    public void getPoiListWhenSearchRequestIsEmpty_shouldReturnList() {
+    public void getPoiListWhenSearchRequestIsNull_shouldReturnList() {
         when(poiRepository.findAll(PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
         when(poiMapper.mapToPoiDTOList(poiEntitiesPage.getContent())).thenReturn(poiDTOPage.getContent());
 
@@ -203,17 +203,16 @@ public class PoiServiceImplTest {
 
         assertEquals(actual, getPoiDtoList());
 
-        verify(poiRepository, never()).searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
-        poiSearchRequest.getCountry(), PageRequest.of(0, 1));
-
         verify(poiRepository).findAll(PageRequest.of(0, 1));
         verify(poiMapper).mapToPoiDTOList(poiEntitiesPage.getContent());
+        verify(poiRepository, never()).searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
+                poiSearchRequest.getCountry(), PageRequest.of(0, 1));
     }
 
     @Test
     public void getPoiListWhenNameIsNotEmpty_shouldReturnList() {
         when(poiRepository.searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
-        poiSearchRequest.getCountry(), PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
+                poiSearchRequest.getCountry(), PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
 
         when(poiMapper.mapToPoiDTOList(poiEntitiesPage.getContent())).thenReturn(poiDTOPage.getContent());
 
@@ -221,9 +220,9 @@ public class PoiServiceImplTest {
 
         assertEquals(actual, poiDTOPage.getContent());
 
-        verify(poiRepository, never()).findAll(PageRequest.of(0, 1));
         verify(poiRepository).searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
-        poiSearchRequest.getCountry(), PageRequest.of(0, 1));
+                poiSearchRequest.getCountry(), PageRequest.of(0, 1));
         verify(poiMapper).mapToPoiDTOList(poiEntitiesPage.getContent());
+        verify(poiRepository, never()).findAll(PageRequest.of(0, 1));
     }
 }
