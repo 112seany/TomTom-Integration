@@ -5,6 +5,7 @@ import com.example.TomTomIntegration.gateway.resources.PoiTomTomDTO;
 import com.example.TomTomIntegration.mapper.PoiMapper;
 import com.example.TomTomIntegration.mapper.PoiTomTomMapper;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PageablePoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
@@ -49,6 +50,8 @@ public class PoiFacadeImplTest {
 
     private static PoiTomTomDTO poiTomTomDTO;
 
+    private static PoiSearchRequest poiSearchRequest;
+
     @BeforeAll
     public static void setUp() {
         poiTomTomResponse = getPoiTomTomResponse();
@@ -57,6 +60,7 @@ public class PoiFacadeImplTest {
         updateRequest = getPoiUpdateRequest();
         poiDTO = getPoiDto();
         poiTomTomDTO = getPoiTomTomDto();
+        poiSearchRequest = getPoiSearchRequest();
     }
 
     @Test
@@ -108,10 +112,10 @@ public class PoiFacadeImplTest {
 
     @Test
     public void getPoiList_shouldReturnPageablePoiResponse() {
-        when(poiService.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, PageRequest.of(0, 1))).thenReturn(getPoiDtoList());
+        when(poiService.getPoiList(poiSearchRequest, PageRequest.of(0, 1))).thenReturn(getPoiDtoList());
         when(poiMapper.mapToPoiResponseList(getPoiDtoList())).thenReturn(getPoiResponseList());
 
-        PageablePoiResponse actual = poiFacade.getPoiList(TEST_NAME_FOR_GET_POI_LIST_METHOD, PageRequest.of(0, 1));
+        PageablePoiResponse actual = poiFacade.getPoiList(poiSearchRequest, PageRequest.of(0, 1));
 
         assertEquals(actual, getPageablePoiResponse());
     }

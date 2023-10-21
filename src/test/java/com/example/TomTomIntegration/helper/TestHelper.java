@@ -8,6 +8,7 @@ import com.example.TomTomIntegration.gateway.resources.*;
 import com.example.TomTomIntegration.messaging.message.PoiInfo;
 import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -51,9 +52,11 @@ public class TestHelper {
             "\"streetName\":\"Southwest Market Street\",\"country\":\"United States\",\"latitude\":\"45.511598\"," +
             "\"longitude\":\"-122.678607\"}";
     public static final String POI_NOT_FOUND_ERROR_MESSAGE = "Poi by id 1 was not found";
-    public static String TEST_NAME_FOR_GET_POI_LIST_METHOD = "Dail";
-    public static String WRONG_PAGE_INDEX_MESSAGE = "Page index must not be less than zero";
-    public static String WRONG_SIZE_MESSAGE = "Page size must not be less than one";
+    public static final String TEST_NAME_FOR_GET_POI_LIST_METHOD = "Dail";
+    public static final String WRONG_PAGE_INDEX_MESSAGE = "Page index must not be less than zero";
+    public static final String WRONG_SIZE_MESSAGE = "Page size must not be less than one";
+    public static final Double SCORE_MIN = 0D;
+    public static final Double SCORE_MAX = 5D;
 
     public static PoiTomTomResponse getPoiTomTomResponse() {
         return PoiTomTomResponse.builder()
@@ -242,6 +245,15 @@ public class TestHelper {
 
     public static List<PoiDTO> getPoiDtoList() {
         return Arrays.asList(getPoiDto());
+    }
+
+    public static PoiSearchRequest getPoiSearchRequest() {
+        return PoiSearchRequest.builder()
+                .name(TEST_NAME_FOR_GET_POI_LIST_METHOD)
+                .scoreMin(SCORE_MIN)
+                .scoreMax(SCORE_MAX)
+                .country(COUNTRY_USA)
+                .build();
     }
 
     private static PoiInfo getPoiInfo() {

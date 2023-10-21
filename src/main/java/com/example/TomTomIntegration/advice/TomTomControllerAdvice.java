@@ -25,7 +25,6 @@ public class TomTomControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Response> handleIllegalArgumentException(IllegalArgumentException e) {
         Response response = new Response(e.getMessage());
-
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

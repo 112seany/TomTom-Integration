@@ -13,6 +13,7 @@ import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.messaging.publisher.RabbitMQPublisher;
 import com.example.TomTomIntegration.repository.PoiRepository;
 import com.example.TomTomIntegration.rest.request.PoiCreationRequest;
+import com.example.TomTomIntegration.rest.request.PoiSearchRequest;
 import com.example.TomTomIntegration.rest.request.PoiUpdateRequest;
 import com.example.TomTomIntegration.rest.response.PoiResponse;
 import com.example.TomTomIntegration.rest.response.PoiTomTomResponse;
@@ -74,6 +75,8 @@ public class PoiServiceImplTest {
 
     private static Page<PoiEntity> poiEntitiesPage;
 
+    private static PoiSearchRequest poiSearchRequest;
+
 
     private static PoiDTO poiDTO;
 
@@ -89,10 +92,9 @@ public class PoiServiceImplTest {
         poiDTO = getPoiDto();
 
         poiLogMessage = getPoiUpdateLogMessage();
-
         poiEntitiesPage = new PageImpl<>(getPoiEntityList());
-
         poiDTOPage = new PageImpl<>(getPoiDtoList());
+        poiSearchRequest = getPoiSearchRequest();
 
     }
 
@@ -193,30 +195,34 @@ public class PoiServiceImplTest {
     }
 
     @Test
-    public void getPoiListWhenNameIsEmpty_shouldReturnList() {
+    public void getPoiListWhenSearchRequestIsNull_shouldReturnList() {
         when(poiRepository.findAll(PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
         when(poiMapper.mapToPoiDTOList(poiEntitiesPage.getContent())).thenReturn(poiDTOPage.getContent());
 
-        List<PoiDTO> actual = tested.getPoiList(StringUtils.EMPTY, PageRequest.of(0,1));
+        List<PoiDTO> actual = tested.getPoiList(null, PageRequest.of(0, 1));
 
         assertEquals(actual, getPoiDtoList());
 
-        verify(poiRepository, never()).findByNameContaining(StringUtils.EMPTY, PageRequest.of(0,1));
-        verify(poiRepository).findAll(PageRequest.of(0,1));
+        verify(poiRepository).findAll(PageRequest.of(0, 1));
         verify(poiMapper).mapToPoiDTOList(poiEntitiesPage.getContent());
+        verify(poiRepository, never()).searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
+                poiSearchRequest.getCountry(), PageRequest.of(0, 1));
     }
 
     @Test
     public void getPoiListWhenNameIsNotEmpty_shouldReturnList() {
-        when(poiRepository.findByNameContaining(RESTAURANT, PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
+        when(poiRepository.searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
+                poiSearchRequest.getCountry(), PageRequest.of(0, 1))).thenReturn(poiEntitiesPage);
+
         when(poiMapper.mapToPoiDTOList(poiEntitiesPage.getContent())).thenReturn(poiDTOPage.getContent());
 
-        List<PoiDTO> actual = tested.getPoiList(RESTAURANT, PageRequest.of(0,1));
+        List<PoiDTO> actual = tested.getPoiList(poiSearchRequest, PageRequest.of(0, 1));
 
         assertEquals(actual, poiDTOPage.getContent());
 
-        verify(poiRepository, never()).findAll(PageRequest.of(0,1));
-        verify(poiRepository).findByNameContaining(RESTAURANT, PageRequest.of(0,1));
+        verify(poiRepository).searchPoi(poiSearchRequest.getName(), poiSearchRequest.getScoreMin(), poiSearchRequest.getScoreMax(),
+                poiSearchRequest.getCountry(), PageRequest.of(0, 1));
         verify(poiMapper).mapToPoiDTOList(poiEntitiesPage.getContent());
+        verify(poiRepository, never()).findAll(PageRequest.of(0, 1));
     }
 }
