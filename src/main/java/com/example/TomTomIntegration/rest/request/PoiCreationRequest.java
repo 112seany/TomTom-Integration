@@ -1,5 +1,6 @@
 package com.example.TomTomIntegration.rest.request;
 
+import com.example.TomTomIntegration.rest.validation.PhoneConstraint;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class PoiCreationRequest {
     @NotBlank(message = "score should not be null")
     private String score;
 
-    @NotBlank(message = "phone should not be null")
+    @PhoneConstraint
     private String phone;
 
     @NotBlank(message = "streetNumber should not be null")
