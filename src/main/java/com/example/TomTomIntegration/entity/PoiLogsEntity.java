@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
@@ -34,4 +36,8 @@ public class PoiLogsEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "event")
     private PoiEvent event;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private PoiEntity poiEntity;
 }

@@ -16,12 +16,13 @@ public interface PoiLogMapper {
     @Mapping(target = "poi", expression = "java(mapPoiEntityToPoiInfo(poi))")
     PoiLogMessage mapToPoiLogMessage(PoiEntity poi, PoiEvent event);
 
-    default PoiLogsEntity mapToPoiLogsEntity(PoiLogMessage poiLogMessage) {
+    default PoiLogsEntity mapToPoiLogsEntity(PoiLogMessage poiLogMessage, PoiEntity poiEntity) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return PoiLogsEntity.builder()
                     .poi(objectMapper.writeValueAsString(poiLogMessage.getPoi()))
                     .event(poiLogMessage.getEvent())
+                    .poiEntity(poiEntity)
                     .build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -40,5 +41,19 @@ public interface PoiLogMapper {
               .longitude(entity.getLongitude())
               .latitude(entity.getLatitude())
               .build();
+    }
+
+    default PoiEntity mapPoiInfoToPoiEntity(PoiInfo poiInfo) {
+        return PoiEntity.builder()
+                .id(Long.parseLong(poiInfo.getId()))
+                .name(poiInfo.getName())
+                .score(poiInfo.getScore())
+                .phone(poiInfo.getPhone())
+                .country(poiInfo.getCountry())
+                .streetName(poiInfo.getStreetName())
+                .streetNumber(poiInfo.getStreetNumber())
+                .longitude(poiInfo.getLongitude())
+                .latitude(poiInfo.getLatitude())
+                .build();
     }
 }

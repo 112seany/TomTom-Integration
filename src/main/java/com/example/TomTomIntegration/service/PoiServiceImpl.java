@@ -74,9 +74,6 @@ public class PoiServiceImpl implements PoiService {
         log.info("Delete Poi by id [{}]", poiId);
         PoiEntity entityToDelete = checkIfPoiExists(poiId);
 
-        PoiLogMessage poiLogMessage = poiLogMapper.mapToPoiLogMessage(entityToDelete, PoiEvent.DELETED);
-        rabbitMQPublisher.sendPoiLogsMessage(poiLogMessage);
-
         poiRepository.deleteById(poiId);
     }
 

@@ -59,10 +59,6 @@ public class PoiServiceImplTest {
 
     private static PoiTomTomDTO poiTomTomDTO;
 
-    private static PoiTomTomResponse poiResponse;
-
-    private static PoiResponse creationResponse;
-
     private static PoiCreationRequest creationRequest;
 
     private static PoiUpdateRequest updateRequest;
@@ -83,10 +79,8 @@ public class PoiServiceImplTest {
     @BeforeAll
     public static void setUp() {
         poiTomTomDTO = getPoiTomTomDto();
-        poiResponse = getPoiTomTomResponse();
 
         creationRequest = getPoiCreationRequest();
-        creationResponse = getPoiCreationResponse();
         poiEntity = getPoiEntity();
         updateRequest = getPoiUpdateRequest();
         poiDTO = getPoiDto();
@@ -178,12 +172,8 @@ public class PoiServiceImplTest {
     public void deletePoi_shouldDeletePOIbyGivenId() {
         when(poiRepository.findById(ID)).thenReturn(Optional.of(poiEntity));
 
-        when(poiLogMapper.mapToPoiLogMessage(poiEntity, PoiEvent.DELETED)).thenReturn(poiLogMessage);
-
         tested.deletePoi(ID);
 
-        verify(poiLogMapper).mapToPoiLogMessage(poiEntity, PoiEvent.DELETED);
-        verify(rabbitMQPublisher).sendPoiLogsMessage(poiLogMessage);
         verify(poiRepository).deleteById(ID);
     }
 
