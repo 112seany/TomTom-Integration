@@ -1,5 +1,6 @@
 package com.example.TomTomIntegration.service;
 
+import com.example.TomTomIntegration.entity.PoiEntity;
 import com.example.TomTomIntegration.mapper.PoiLogMapper;
 import com.example.TomTomIntegration.messaging.message.PoiLogMessage;
 import com.example.TomTomIntegration.repository.PoiLogRepository;
@@ -19,6 +20,7 @@ public class PoiLogServiceImpl implements PoiLogService {
     @Override
     public void createPoiLog(PoiLogMessage message) {
         log.info("Create poi log with id [{}]", message.getPoi().getId());
-        poiLogRepository.save(poiLogMapper.mapToPoiLogsEntity(message));
+        PoiEntity poiEntity = poiLogMapper.mapPoiInfoToPoiEntity(message.getPoi());
+        poiLogRepository.save(poiLogMapper.mapToPoiLogsEntity(message, poiEntity));
     }
 }

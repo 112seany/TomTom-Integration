@@ -45,11 +45,13 @@ public class PoiLogMapperTest {
     @Test
     public void mapToPoiLogsEntityTest() {
         PoiLogMessage poiLogMessage = getPoiUpdateLogMessage();
+        PoiEntity poiEntity = getPoiEntity();
 
-        PoiLogsEntity poiLogsEntity = tested.mapToPoiLogsEntity(poiLogMessage);
+        PoiLogsEntity poiLogsEntity = tested.mapToPoiLogsEntity(poiLogMessage, poiEntity);
 
         assertNotNull(poiLogsEntity.getTime());
         assertEquals(poiLogMessage.getEvent(), poiLogsEntity.getEvent());
         assertEquals(poiLogsEntity.getPoi(), POI_INFO_JSON);
+        assertEquals(poiLogsEntity.getPoiEntity(), poiEntity);
     }
 }

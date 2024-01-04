@@ -23,5 +23,4 @@ public interface PoiRepository extends JpaRepository<PoiEntity, Long> {
                               @Param("scoreMax") Double scoreMax,
                               @Param("country") String country,
                               PageRequest pageRequest);
-
 }
